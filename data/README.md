@@ -51,10 +51,12 @@ Key steps include:
 - Joining member information
 - Feature engineering from temporal behavior
 
-All processing is implemented in:
-data/1transaction_data_generation.ipynb
-data/2user_log_data_generation.ipynb
-data/3data_exploration.ipynb
+All processing is implemented in the following scripts:
+
+、、、text
+src/1transaction_data_generation.ipynb
+src/2user_log_data_generation.ipynb
+src/3data_exploration.ipynb
 
 ---
 
@@ -78,5 +80,5 @@ To reproduce results:
 
 1. Download raw data from Kaggle
 2. Place in data/raw/
-3. Run preprocessing scripts in src/data/
-4. Train model using notebooks or src/train.py
+3. Run preprocessing scripts in src
+4. Train model using notebooks
