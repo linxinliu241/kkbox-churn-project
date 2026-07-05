@@ -5,7 +5,8 @@
 This project uses the KKBOX Churn Prediction dataset, which includes multiple tables:
 
 - members.csv: user demographic information
-- transactions.csv: payment and subscription history
+- transactions.csv: payment and subscription history (Version 1)
+- transactions.csv: updated transaction records (Version 2)
 - user_logs.csv: daily user activity logs
 - train.csv: labeled training data (churn outcome)
 - test.csv: unlabeled evaluation data
@@ -51,7 +52,9 @@ Key steps include:
 - Feature engineering from temporal behavior
 
 All processing is implemented in:
-src/data/preprocess.py
+data/1transaction_data_generation.ipynb
+data/2user_log_data_generation.ipynb
+data/3data_exploration.ipynb
 
 ---
 
@@ -75,5 +78,5 @@ To reproduce results:
 
 1. Download raw data from Kaggle
 2. Place in data/raw/
-3. Run preprocessing scripts in src/
+3. Run preprocessing scripts in src/data/
 4. Train model using notebooks or src/train.py
