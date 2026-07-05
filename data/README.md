@@ -1,1 +1,56 @@
-data
+# Data Description
+
+## 1. Data Source
+This project uses the **KKBOX Churn Prediction dataset** from Kaggle:
+
+https://www.kaggle.com/c/kkbox-churn-prediction-challenge
+
+---
+
+## 2. Data Access
+The dataset is not included in this repository due to Kaggle licensing restrictions.
+
+To reproduce:
+1. Sign in to Kaggle
+2. Accept competition rules and obtain access
+3. Download dataset from the link above
+
+---
+
+## 3. Data Organization
+
+After downloading, place files as follows:
+
+data/
+├── raw/          # original Kaggle data (unchanged)
+├── processed/    # cleaned / feature-engineered data
+├── sample/       # small subset for testing pipeline
+
+---
+
+## 4. Data Flow in Pipeline
+
+Raw data → src/data preprocessing → processed data → model training
+
+All transformations are implemented in:
+
+src/
+
+---
+
+## 5. Reproducibility
+
+All results in this project can be reproduced by:
+
+1. Downloading raw data from Kaggle
+2. Placing it in data/raw/
+3. Running scripts in src/ to generate processed data and features
+4. Training models using notebooks or src/train.py
+
+---
+
+## 6. Notes
+
+- Raw data is immutable and never modified
+- Processed data is generated from raw data via scripts
+- Sample data is used for debugging and fast iteration
