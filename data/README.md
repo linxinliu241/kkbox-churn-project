@@ -24,9 +24,6 @@ Churn labels are generated using a rule-based definition based on subscription e
 - The cutoff date is set at 2017-01-31 to prevent data leakage
 - Label generation is implemented in the data preprocessing pipeline
 
-The exact labeling logic is implemented in:
-src/data/labeling.py
-
 ---
 
 ## 3. Dataset Versions
@@ -74,7 +71,7 @@ data/
 
 ## 6. Reproducibility
 
-All datasets (except raw Kaggle data) are generated programmatically via scripts in src/.
+All datasets (except raw Kaggle data) are generated programmatically via scripts in data/.
 
 To reproduce results:
 
