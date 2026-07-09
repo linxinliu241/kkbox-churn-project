@@ -1,0 +1,16 @@
+# Processed Data
+
+Processed datasets are generated from raw Kaggle data through the preprocessing pipeline.
+
+The processed data includes:
+
+- train.parquet: processed training dataset
+- val.parquet: validation dataset
+- test.parquet: processed test dataset
+
+Due to large file sizes, processed datasets are not stored in this repository.
+
+To reproduce:
+1. Download raw data from Kaggle
+2. Run preprocessing notebooks/scripts
+3. Generated parquet files will be saved here
