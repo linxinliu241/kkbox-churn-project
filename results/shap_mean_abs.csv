@@ -1,0 +1,10 @@
+,mean_abs_shap
+last_is_auto_renew,0.9316408
+avg_plan_price,0.6260097
+days_since_first_trans,0.56646013
+avg_payment_per_day,0.37298742
+days_since_last_use,0.2789421
+ratio_auto_renew,0.16468981
+last_is_cancel,0.1146218
+num_unq_velocity,0.09967887
+total_secs_velocity,0.063066885

@@ -1,0 +1,15 @@
+{
+  "best_model_name": "XGBoost",
+  "features": [
+    "avg_plan_price",
+    "avg_payment_per_day",
+    "days_since_first_trans",
+    "days_since_last_use",
+    "ratio_auto_renew",
+    "total_secs_velocity",
+    "num_unq_velocity",
+    "last_is_auto_renew",
+    "last_is_cancel"
+  ],
+  "target": "is_churn"
+}
