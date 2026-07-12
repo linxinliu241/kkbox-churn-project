@@ -23,15 +23,6 @@ A time-aware validation framework identifies high-risk users with XGBoost achiev
 Music streaming platforms acquire millions of users, yet retaining long-term subscribers remains a major challenge. This project develops a machine learning framework to predict user churn on KKBOX by leveraging subscription patterns, listening behaviors, and profile information. The analysis aims to uncover key drivers of customer retention and identify users at risk of leaving the platform.
 
 
-## Data Source
-
-| File / Source | Description |
-|---|---|
-| **transactions.csv** | User transaction records (~2.1M rows), including payment history, subscription plans, renewal status, and cancellation behavior. |
-| **transactions_v2.csv** | Updated transaction records (~7.1M rows) containing additional subscription activities through 2017-03-31. |
-| **user_logs.csv** | Daily user listening behavior logs (~104.9M rows), including song play counts, unique songs, and total listening duration. |
-| **members.csv** | User demographic and account information (~3.4M users), including city, age, gender, registration method, and account dates. |
-
 
 ## Repository Structure
 
@@ -94,6 +85,16 @@ Python >= 3.9. All dependencies are listed in [`requirements.txt`](requirements.
 
 ---
 
+
+
+## Data Source
+
+| File / Source | Description |
+|---|---|
+| **transactions.csv** | User transaction records (~2.1M rows), including payment history, subscription plans, renewal status, and cancellation behavior. |
+| **transactions_v2.csv** | Updated transaction records (~7.1M rows) containing additional subscription activities through 2017-03-31. |
+| **user_logs.csv** | Daily user listening behavior logs (~104.9M rows), including song play counts, unique songs, and total listening duration. |
+| **members.csv** | User demographic and account information (~3.4M users), including city, age, gender, registration method, and account dates. |
 
 
 ## Data Preprocessing Pipeline
