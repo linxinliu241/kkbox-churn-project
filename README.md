@@ -76,8 +76,6 @@ G["Member Integration<br/>Merge user profile"]
 
 H["Activity Integration<br/>Historical listening logs"]
 
-I["User-Cohort Dataset<br/>User × Cohort"]
-
 
 
 %% =========================
@@ -117,10 +115,6 @@ C --> G
 
 G --> H
 D --> H
-
-H --> I
-
-I --> J
 
 
 
