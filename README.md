@@ -7,6 +7,26 @@
 
 A time-aware validation framework identifies high-risk users with XGBoost achieving strong predictive performance while maintaining model interpretability.
 
+
+## Table of Contents
+
+1. [Project Overview](#project-overview)
+2. [Data Sources](#data-sources)
+3. [Churn Definition](#churn-definition)
+4. [Data Pipeline](#data-pipeline)
+5. [Feature Engineering](#feature-engineering)
+6. [Preventing Data Leakage](#preventing-data-leakage)
+7. [Modeling Pipeline](#modeling-pipeline)
+8. [Models Evaluated](#models-evaluated)
+9. [Model Selection: Validation, Not Cross-Validation](#model-selection-validation-not-cross-validation)
+10. [Final Model: XGBoost](#final-model-xgboost)
+11. [Can an Ensemble Do Better?](#can-an-ensemble-do-better)
+12. [Explaining Predictions: SHAP → LLM](#explaining-predictions-shap--llm)
+13. [Repository Structure](#repository-structure)
+14. [Getting Started](#getting-started)
+
+
+
 ## Project Summary
 
 | Component | Description |
