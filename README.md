@@ -216,7 +216,7 @@ This fix addresses the leak for the val/test split, but **we did not fix it for 
 
 The tuned XGBoost is refit on train + val, then evaluated once on the three held-out test cohorts (Dec 2016 – Feb 2017).
 
-![Final Test ROC and PR curves](images/final_test_curves.png)
+![Final Test ROC and PR curves](figures/Metric_curves.png)
 
 | Cohort | Churn Rate | ROC-AUC | Log Loss | PR-AUC |
 |--------|:----------:|:-------:|:--------:|:------:|
@@ -251,7 +251,7 @@ The ensemble wins on two metrics and loses on one — too small and too mixed to
 
 A score alone isn't actionable. The final layer (`7_LLM_churn_explanation.ipynb`) turns each prediction into a retention report in plain language.
 
-![SHAP Summary](images/shap_summary.png)
+![SHAP Summary](figures/SHAP_plot.png)
 
 The pipeline is deliberately fenced:
 
