@@ -36,6 +36,13 @@ Music streaming platforms acquire millions of users, yet retaining long-term sub
 ## Data Pipeline
 
 ```mermaid
+%%{init: {
+  "flowchart": {
+    "nodeSpacing": 70,
+    "rankSpacing": 90
+  }
+}}%%
+
 flowchart LR
 
 %% =========================
@@ -114,9 +121,9 @@ I --> J
 %% Style
 %% =========================
 
-classDef raw fill:#4F73B8,color:white,stroke:#333;
-classDef process fill:#63A46C,color:white,stroke:#333;
-classDef final fill:#C94C4C,color:white,stroke:#333;
+classDef raw fill:#4F73B8,color:white,stroke:#333,font-size:16px;
+classDef process fill:#63A46C,color:white,stroke:#333,font-size:16px;
+classDef final fill:#C94C4C,color:white,stroke:#333,font-size:16px;
 
 class A,B,C,D raw;
 class E,F,G,H,I,J,K,L,M,N process;
