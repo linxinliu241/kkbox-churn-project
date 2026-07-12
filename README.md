@@ -120,7 +120,7 @@ flowchart LR
 %% Stage 1: Data Integration
 %% =========================
 
-subgraph DATA["Data Integration and Cohort Construction"]
+subgraph DATA["Data Integration"]
 
 direction LR
 
@@ -168,7 +168,7 @@ end
 %% Stage 2: Feature Engineering
 %% =========================
 
-subgraph FEATURE["Feature Engineering and Model Preparation"]
+subgraph FEATURE["Feature Engineering"]
 
 direction TB
 
@@ -231,125 +231,6 @@ style FEATURE fill:none,stroke:#666,stroke-width:2px,stroke-dasharray:6 6
 ```
 
 
-
-## Data Preprocessing Pipeline
-
-```mermaid
-%%{init: {
-  "flowchart": {
-    "nodeSpacing": 90,
-    "rankSpacing": 80,
-    "curve": "basis"
-  },
-  "themeVariables": {
-    "fontSize": "20px"
-  }
-}}%%
-
-
-flowchart LR
-
-
-%% =========================
-%% Raw Data Sources
-%% =========================
-
-A["transactions.csv<br/>Payment records<br/>Renewal / cancellation"]
-
-B["transactions_v2.csv<br/>Extended transaction history"]
-
-C["members.csv<br/>User profile"]
-
-D["user_logs.csv<br/>Listening activity"]
-
-
-
-%% =========================
-%% Data Aggregation Stage
-%% =========================
-
-E["Transaction Integration<br/>Combine transaction history"]
-
-F["Cohort Construction<br/>Identify users expiring<br/>within each cohort month"]
-
-G["Profile Integration<br/>Merge member information"]
-
-H["Activity Integration<br/>Attach historical logs<br/>before cutoff date"]
-
-I["User-Cohort Raw Dataset<br/>Integrated transaction, profile,<br/>and activity records"]
-
-
-
-%% =========================
-%% Feature Stage
-%% =========================
-
-subgraph FEATURE["Feature Engineering and Model Preparation"]
-
-direction TB
-
-J["User-Cohort Aggregation<br/>Group records by user and cohort<br/>Create one row per user-cohort"]
-
-K["Feature Construction<br/>Generate payment, renewal,<br/>cancellation, and engagement features"]
-
-L["Feature Selection<br/>Analyze feature-churn relationships<br/>Select 9 predictors"]
-
-M["Data Preparation<br/>Missing value imputation<br/>Time-based train / validation / test split"]
-
-N["Final Modeling Dataset<br/>25 monthly cohorts<br/>9 selected features"]
-
-
-J --> K
-K --> L
-L --> M
-M --> N
-
-end
-
-
-
-%% =========================
-%% Connections
-%% =========================
-
-A --> E
-B --> E
-
-E --> F
-
-F --> G
-C --> G
-
-G --> H
-D --> H
-
-H --> I
-
-I --> J
-
-
-
-%% =========================
-%% Styling
-%% =========================
-
-classDef raw fill:#4F73B8,color:white,stroke:#333,font-size:20px;
-
-classDef process fill:#63A46C,color:white,stroke:#333,font-size:20px;
-
-classDef final fill:#C94C4C,color:white,stroke:#333,font-size:20px;
-
-
-class A,B,C,D raw;
-
-class E,F,G,H,I,J,K,L,M process;
-
-class N final;
-
-
-style FEATURE fill:none,stroke:#666,stroke-width:2px,stroke-dasharray:6 6
-
-```
 
 
 
