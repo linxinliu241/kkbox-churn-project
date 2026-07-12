@@ -1,7 +1,7 @@
 # Loyal Customers vs. Ghost Accounts
 ## A Machine Learning Framework for Predicting User Retention and Churn on KKbox
 
-**Authors:** [Yingying Yang](https://github.com/your-handle) · [Darryl Jent](https://github.com/darryl-handle) · [Linxin Liu](https://github.com/linxin-handle) · [Kaiwen Jin](https://github.com/kaiwen-handle) · [Albert Lu](https://github.com/albert-handle)
+**Authors:** Yingying Yang · Darryl Jent · Linxin Liu · Kaiwen Jin · Albert Lu
 
 📄 [Executive Summary](KKBox%20Churn%20Prediction%20Executive%20Summary.pdf)
 
