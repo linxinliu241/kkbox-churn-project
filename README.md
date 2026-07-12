@@ -33,22 +33,83 @@ Music streaming platforms acquire millions of users, yet retaining long-term sub
 
 ## Data Preprocessing Pipeline
 
-transactions.csv
-        \
-         → transaction history
-        /
-transactions_v2.csv
+## Data Pipeline
 
-transaction history
-        +
-        +
-members.csv
-        ↓
-user profile integrated
+```mermaid
+flowchart TD
 
-user profile integrated
-        +
-        +
-user_logs.csv
-        ↓
-complete user-cohort dataset
+%% Raw Sources
+
+A["transactions.csv<br/>Payment records<br/>Renewal / cancellation behavior"]
+
+B["transactions_v2.csv<br/>Extended transaction history"]
+
+C["members.csv<br/>User demographic information"]
+
+D["user_logs.csv<br/>Daily listening activity<br/>Engagement behavior"]
+
+
+%% Data Construction
+
+E["Transaction History Integration<br/>Combine transactions.csv<br/>and transactions_v2.csv"]
+
+F["Target User Identification<br/>Select users with membership<br/>expiration in each cohort month"]
+
+G["User Profile Integration<br/>Merge member information<br/>by user ID"]
+
+H["Activity Integration<br/>Retrieve user logs before cutoff date<br/>for target users"]
+
+
+%% Feature Engineering
+
+I["User-Cohort Level Dataset<br/>One row = one user in one cohort month"]
+
+J["Feature Engineering<br/>Aggregate transaction records<br/>and generate behavioral features"]
+
+K["Feature Selection<br/>Analyze feature-churn relationship<br/>Select 9 predictive features"]
+
+
+%% Preparation
+
+L["Missing Value Imputation"]
+
+M["Cohort-based Split<br/>Train / Validation / Test"]
+
+
+%% Final
+
+N["Final Modeling Dataset<br/>25 monthly cohorts<br/>9 selected features"]
+
+
+%% Connections
+
+A --> E
+B --> E
+
+E --> F
+F --> G
+C --> G
+
+G --> H
+D --> H
+
+H --> I
+
+I --> J
+J --> K
+
+K --> L
+L --> M
+M --> N
+
+
+%% Style
+
+classDef raw fill:#4F73B8,color:white,stroke:#333;
+classDef process fill:#63A46C,color:white,stroke:#333;
+classDef final fill:#C94C4C,color:white,stroke:#333;
+
+class A,B,C,D raw;
+class E,F,G,H,I,J,K,L,M process;
+class N final;
+
