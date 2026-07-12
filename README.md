@@ -99,6 +99,20 @@ Python >= 3.9. All dependencies are listed in [`requirements.txt`](requirements.
 | **members_v3.csv** | User demographic and account information (~1M rows), including city, age, gender, registration method, and account dates. |
 
 
+
+## Churn Definition
+
+The original KKBOX competition dataset provides churn labels for a subset of users, but does not provide a consistent labeling framework across all monthly cohorts. To support a cohort-based expanding window prediction setting, we constructed churn labels using future renewal behavior.
+
+For each cohort month, users whose membership expired within that month were selected as prediction targets. A user was labeled as:
+
+- `churn = 1`: no renewal transaction occurred within 30 days after membership expiration.
+- `churn = 0`: the user renewed successfully within the 30-day post-expiration window.
+
+This cohort-based labeling strategy enables consistent evaluation across time and allows the model to simulate real-world churn prediction using only historical information available before each prediction cutoff.
+
+
+
 ## Data Preprocessing Pipeline
 
 ```mermaid
