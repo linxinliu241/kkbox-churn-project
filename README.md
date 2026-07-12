@@ -132,6 +132,20 @@ style PIPELINE fill:none,stroke:#666,stroke-width:2px,stroke-dasharray: 6 6
   </tr>
 </table>
 
+
+### Feature Distributions vs. Churn
+
+<table border="0" cellspacing="0" cellpadding="0" style="border: none; border-collapse: collapse;">
+  <tr valign="top">
+    <td style="border: none; padding: 0; margin: 0;">
+      <img src="figures/cont_fea_boxplot.png" width="600"/>
+    </td>
+    <td style="border: none; padding: 0; margin: 0;">
+      <img src="figures/bin_fea_barplot.png" width="350"/>
+    </td>
+  </tr>
+</table>
+
 ### Velocity, Not Volume
 
 Absolute listening time is meaningless without context — 400 minutes is a lot for one user and nothing for another. Instead of raw volume, we measure each user against **their own recent baseline**:
