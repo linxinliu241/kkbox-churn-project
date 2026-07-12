@@ -184,7 +184,7 @@ Selection and robustness answer two different questions, so we use two different
 
 **Cross-validation checks it holds.** Time-series CV rolls the cutoff forward across cohorts and asks whether a model stays stable over time, or was lucky once. It is a diagnostic, not the selection criterion — a model that wins on validation but swings wildly across CV folds is a red flag.
 
-![Model Comparison](figures/CV.results.png)
+![Model Comparison](figures/CV_results.png)
 
 On validation PR-AUC, the four tree models sit within **0.0025** of each other; XGBoost edges ahead, and Logistic Regression is the only clear laggard.
 
