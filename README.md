@@ -125,12 +125,7 @@ style PIPELINE fill:none,stroke:#666,stroke-width:2px,stroke-dasharray: 6 6
 
 ### Feature Distributions vs. Churn
 
-<table>
-  <tr>
-    <td><img src="figures/cont_fea_boxplot.png" width="100%"/></td>
-    <td><img src="figures/bin_fea_barplot.png" width="100%"/></td>
-  </tr>
-</table>
+![Model Comparison](figures/fea_plots.png)
 
 
 ### Velocity, Not Volume
