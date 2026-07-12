@@ -189,57 +189,65 @@ style FEATURE fill:none,stroke:#666,stroke-width:2px,stroke-dasharray:6 6
 
 ## Data Preparation Summary
 
-
 | Step | Operation |
 |---|---|
-| 1 | **Transaction data construction**: Combined `transactions.csv` and `transactions_v2.csv`; removed duplicate records and ambiguous same-day transactions; filtered users whose membership expired within each cohort month and constructed churn labels based on no renewal within 30 days after expiration. |
-| 2 | **Transaction feature aggregation**: Aggregated multiple historical transactions within each user-cohort; generated subscription behavior features including `num_transactions`, `total_paid`, `avg_plan_price`, `avg_payment_per_day`, `total_auto_renew`, `total_cancel`, `last_payment_plan_days`, `last_plan_list_price`, `last_is_auto_renew`, and `last_is_cancel`. |
-| 3 | **User activity feature generation**: Filtered `user_logs.csv` before each cohort cutoff date and aggregated listening behavior by user-cohort; created engagement features including `total_secs_velocity` and `num_unq_velocity` to capture changes relative to users' own historical activity baseline rather than absolute usage levels. |
-| 4 | **User-cohort dataset construction**: Integrated transaction, activity, and profile information by `msno` and cohort; aggregated multiple historical records into one observation per user per cohort month across 25 monthly cohorts. |
-| 5 | **Feature cleaning and selection**: Removed unreliable profile variables including `bd` and `registration_init_time`; removed redundant predictors based on feature correlation analysis; evaluated feature-churn relationships and selected 9 predictive features for modeling. |
-| 6 | **Missing value handling and dataset split**: Added missing-value indicators for selected predictors; imputed missing values using training data statistics; created time-based train/validation/test splits for future cohort evaluation. |
+| 1 | **Transaction integration and cohort construction**: Combined `transactions.csv` and `transactions_v2.csv`, removed duplicate records, and identified users whose memberships expired within each cohort month as prediction targets. |
+| 2 | **User profile and activity integration**: Merged `members.csv` and historical `user_logs.csv` information with target users using `msno`, while restricting activity records to the period before each cohort cutoff date. |
+| 3 | **User-cohort dataset construction**: Integrated transaction, profile, and activity records into a user-cohort level dataset, where each observation represents one user at one cohort month. |
+| 4 | **Historical record aggregation**: Aggregated multiple transaction and activity records within each user-cohort into summary statistics describing subscription behavior, payment patterns, and engagement trends. |
+| 5 | **Feature cleaning and selection**: Removed unreliable or non-predictive variables, including demographic fields with extreme values and redundant predictors; selected 9 predictive features based on feature-churn relationships. |
+| 6 | **Missing value handling and dataset split**: Imputed missing values using training-set information only and created time-based train, validation, and test cohorts for future prediction evaluation. |
 
 
 
 
+## A Data Leak We Found and Fixed
+
+Missing `days_since_last_use` values were originally imputed with a sentinel computed separately within each split — train, val, and test were each imputed using their own maximum. Because the val and test sentinels were computed from data that includes information not available at prediction time, this was a leak.
+
+The fix, in `5_modeling.ipynb`, changes only how val and test are imputed: the sentinel is now the maximum `days_since_last_use` seen in the **training data only**, and that same train-derived value is used to fill missing values in train, val, and test alike. The train split's imputed values are unchanged by this fix — train was already being imputed with its own max, which is the same value it's imputed with now. What changed is val (and test): instead of being imputed with the max computed over val itself, it's now imputed with the max computed over train.
+
+This fix addresses the leak for the val/test split, but **we did not fix it for the CV folds** — each CV fold's val imputation still uses information beyond what that fold's training data would have available. Since CV is used only as a stability diagnostic and not for model selection, we judged the residual leak there to be low-impact, but it remains unaddressed. The fully-clean fix — per-fold imputation inside a pipeline — is noted as future work.
+
+> Finding and fixing a leak in our own pipeline is, we think, more credible than presenting one that merely looks flawless.
+
+---
 
 
 
 ## Feature Engineering
 
-After aggregating historical transaction and activity records at the user-cohort level, we transformed raw behavioral data into predictive features. The goal was to capture not only users' current subscription status, but also changes in payment behavior, renewal patterns, and engagement trends before churn.
+After constructing the user-cohort dataset, we transformed aggregated behavioral records into predictive features that capture subscription commitment, payment patterns, customer tenure, and engagement changes before churn.
 
-Features were grouped into four categories:
-
-- **Transaction behavior:** Capture subscription decisions and payment patterns, including renewal and cancellation signals.
-- **Tenure & timing:** Capture customer lifetime and subscription recency.
-- **Usage velocity:** Measure changes in recent engagement relative to each user's own historical baseline.
-- **Engagement recency:** Capture inactivity signals before churn.
-
-### Velocity, Not Volume
-
-Absolute listening time is meaningless without context — 400 minutes is a lot for one user and nothing for another. Instead of raw volume, we measure each user against **their own recent baseline**:
-
-| Feature | Definition |
-|--------|---------|
-| `total_secs_velocity` | 14-day listening time ÷ 30-day listening time |
-| `num_unq_velocity` | 14-day unique tracks ÷ 30-day unique tracks |
-
-A value well below 1 means a user is fading relative to their own norm — an early churn signal that shows up before they actually cancel.
-
----
+The original preprocessing pipeline generated 28 candidate features. After analyzing feature distributions, feature-churn relationships, and redundancy, 9 predictors were retained for final modeling.
 
 ### Feature Categories (9 total)
 
 | Category | # Features | Selected Features | Interpretation |
 |---|---|---|---|
-| Transaction behavior | 4 | `last_is_cancel`, `last_is_auto_renew`, `ratio_auto_renew`, `avg_plan_price` | Subscription commitment and payment behavior |
-| Tenure & timing | 2 | `days_since_first_trans`, `avg_payment_per_day` | Customer lifetime and payment intensity |
-| Usage velocity | 2 | `total_secs_velocity`, `num_unq_velocity` | Recent engagement change relative to personal baseline |
-| Engagement recency | 1 | `days_since_last_use` | Recent inactivity before churn |
+| Transaction behavior | 4 | `last_is_cancel`, `last_is_auto_renew`, `ratio_auto_renew`, `avg_plan_price` | Capture subscription commitment and payment behavior |
+| Tenure & timing | 2 | `days_since_first_trans`, `avg_payment_per_day` | Capture customer lifetime and payment intensity |
+| Usage velocity | 2 | `total_secs_velocity`, `num_unq_velocity` | Capture recent engagement changes relative to personal baseline |
+| Engagement recency | 1 | `days_since_last_use` | Capture inactivity before churn |
+
+
+### Velocity, Not Volume
+
+Raw listening volume alone does not fully represent changes in user engagement. A user who normally listens to 10 songs per day and decreases to 8 songs shows a different pattern from a user who drops from 100 songs to 50 songs.
+
+Therefore, we created velocity features that measure recent activity relative to each user's own historical baseline:
+
+| Feature | Definition |
+|--------|---------|
+| `total_secs_velocity` | Recent 14-day listening time / previous 30-day listening time |
+| `num_unq_velocity` | Recent 14-day unique tracks / previous 30-day unique tracks |
+
+Values below 1 indicate declining engagement relative to a user's normal behavior, providing an early signal of potential churn.
 
 
 ### Feature Distributions vs. Churn
+
+The relationship between selected features and churn was examined through distribution analysis. Continuous features were compared using churn-stratified boxplots, while binary features were evaluated through churn rate comparisons.
 
 ![feature distribution](figures/fea_plots.png)
 
@@ -308,17 +316,7 @@ Because the tree models are effectively tied, XGBoost is chosen for its narrow e
 
 
 
-## A Data Leak We Found and Fixed
 
-Missing `days_since_last_use` values were originally imputed with a sentinel computed separately within each split — train, val, and test were each imputed using their own maximum. Because the val and test sentinels were computed from data that includes information not available at prediction time, this was a leak.
-
-The fix, in `5_modeling.ipynb`, changes only how val and test are imputed: the sentinel is now the maximum `days_since_last_use` seen in the **training data only**, and that same train-derived value is used to fill missing values in train, val, and test alike. The train split's imputed values are unchanged by this fix — train was already being imputed with its own max, which is the same value it's imputed with now. What changed is val (and test): instead of being imputed with the max computed over val itself, it's now imputed with the max computed over train.
-
-This fix addresses the leak for the val/test split, but **we did not fix it for the CV folds** — each CV fold's val imputation still uses information beyond what that fold's training data would have available. Since CV is used only as a stability diagnostic and not for model selection, we judged the residual leak there to be low-impact, but it remains unaddressed. The fully-clean fix — per-fold imputation inside a pipeline — is noted as future work.
-
-> Finding and fixing a leak in our own pipeline is, we think, more credible than presenting one that merely looks flawless.
-
----
 
 
 
