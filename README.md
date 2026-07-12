@@ -38,15 +38,19 @@ Music streaming platforms acquire millions of users, yet retaining long-term sub
 ```mermaid
 %%{init: {
   "flowchart": {
-    "nodeSpacing": 70,
-    "rankSpacing": 90
+    "nodeSpacing": 80,
+    "rankSpacing": 100
+  },
+  "themeVariables": {
+    "fontSize": "18px"
   }
 }}%%
 
 flowchart LR
 
+
 %% =========================
-%% Raw + Integration (Left)
+%% Raw Data Sources
 %% =========================
 
 A["transactions.csv<br/>Payment & renewal"]
@@ -58,35 +62,40 @@ C["members.csv<br/>User profile"]
 D["user_logs.csv<br/>Listening activity"]
 
 
-E["Transaction Integration<br/>Merge transactions"]
+%% =========================
+%% Data Construction
+%% =========================
+
+E["Transaction Integration<br/>Merge transaction history"]
 
 F["Target Users<br/>Cohort expiration filtering"]
 
-G["Member Integration<br/>Merge profiles"]
+G["Member Integration<br/>Merge user profile"]
 
-H["Activity Integration<br/>Historical logs"]
+H["Activity Integration<br/>Historical listening logs"]
 
 I["User-Cohort Dataset<br/>User × Cohort"]
+
 
 
 %% =========================
 %% Right Vertical Pipeline
 %% =========================
 
-subgraph RIGHT[" "]
+subgraph PIPELINE[" "]
 direction TB
 
-J["Aggregation<br/>Generate user features"]
+J["Aggregation<br/>Generate user-level features"]
 
-K["Feature Engineering<br/>Behavior & payment features"]
+K["Feature Engineering<br/>Payment, renewal,<br/>cancellation & engagement"]
 
-L["Feature Selection<br/>9 predictors"]
+L["Feature Selection<br/>Select 9 predictors"]
 
-M["Imputation"]
+M["Missing Value Imputation"]
 
-N["Cohort Split<br/>Train / Val / Test"]
+N["Cohort Split<br/>Train / Validation / Test"]
 
-O["Final Dataset<br/>25 cohorts<br/>9 features"]
+O["Final Modeling Dataset<br/>25 cohorts<br/>9 selected features"]
 
 J --> K
 K --> L
@@ -95,6 +104,7 @@ M --> N
 N --> O
 
 end
+
 
 
 %% =========================
@@ -117,14 +127,25 @@ H --> I
 I --> J
 
 
+
 %% =========================
 %% Style
 %% =========================
 
-classDef raw fill:#4F73B8,color:white,stroke:#333,font-size:16px;
-classDef process fill:#63A46C,color:white,stroke:#333,font-size:16px;
-classDef final fill:#C94C4C,color:white,stroke:#333,font-size:16px;
+classDef raw fill:#4F73B8,color:white,stroke:#333,font-size:18px;
+classDef process fill:#63A46C,color:white,stroke:#333,font-size:18px;
+classDef final fill:#C94C4C,color:white,stroke:#333,font-size:18px;
+
 
 class A,B,C,D raw;
 class E,F,G,H,I,J,K,L,M,N process;
 class O final;
+
+
+
+%% =========================
+%% Remove yellow background
+%% Add dashed outline for pipeline
+%% =========================
+
+style PIPELINE fill:none,stroke:#666,stroke-width:2px,stroke-dasharray: 6 6
