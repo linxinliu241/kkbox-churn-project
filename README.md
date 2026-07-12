@@ -233,7 +233,6 @@ style FEATURE fill:none,stroke:#666,stroke-width:2px,stroke-dasharray:6 6
 
 
 
-
 ## Data Preparation Summary
 
 
@@ -245,6 +244,22 @@ style FEATURE fill:none,stroke:#666,stroke-width:2px,stroke-dasharray:6 6
 | 4 | **User-cohort dataset construction**: Integrated transaction, activity, and profile information by `msno` and cohort; aggregated multiple historical records into one observation per user per cohort month across 25 monthly cohorts. |
 | 5 | **Feature cleaning and selection**: Removed unreliable profile variables including `bd` and `registration_init_time`; removed redundant predictors based on feature correlation analysis; evaluated feature-churn relationships and selected 9 predictive features for modeling. |
 | 6 | **Missing value handling and dataset split**: Added missing-value indicators for selected predictors; imputed missing values using training data statistics; created time-based train/validation/test splits for future cohort evaluation. |
+
+
+
+
+## A Data Leak We Found and Fixed
+
+Missing `days_since_last_use` values were originally imputed with a sentinel computed separately within each split — train, val, and test were each imputed using their own maximum. Because the val and test sentinels were computed from data that includes information not available at prediction time, this was a leak.
+
+The fix, in `5_modeling.ipynb`, changes only how val and test are imputed: the sentinel is now the maximum `days_since_last_use` seen in the **training data only**, and that same train-derived value is used to fill missing values in train, val, and test alike. The train split's imputed values are unchanged by this fix — train was already being imputed with its own max, which is the same value it's imputed with now. What changed is val (and test): instead of being imputed with the max computed over val itself, it's now imputed with the max computed over train.
+
+This fix addresses the leak for the val/test split, but **we did not fix it for the CV folds** — each CV fold's val imputation still uses information beyond what that fold's training data would have available. Since CV is used only as a stability diagnostic and not for model selection, we judged the residual leak there to be low-impact, but it remains unaddressed. The fully-clean fix — per-fold imputation inside a pipeline — is noted as future work.
+
+> Finding and fixing a leak in our own pipeline is, we think, more credible than presenting one that merely looks flawless.
+
+---
+
 
 
 
@@ -348,17 +363,7 @@ Because the tree models are effectively tied, XGBoost is chosen for its narrow e
 
 ---
 
-## A Data Leak We Found and Fixed
 
-Missing `days_since_last_use` values were originally imputed with a sentinel computed separately within each split — train, val, and test were each imputed using their own maximum. Because the val and test sentinels were computed from data that includes information not available at prediction time, this was a leak.
-
-The fix, in `5_modeling.ipynb`, changes only how val and test are imputed: the sentinel is now the maximum `days_since_last_use` seen in the **training data only**, and that same train-derived value is used to fill missing values in train, val, and test alike. The train split's imputed values are unchanged by this fix — train was already being imputed with its own max, which is the same value it's imputed with now. What changed is val (and test): instead of being imputed with the max computed over val itself, it's now imputed with the max computed over train.
-
-This fix addresses the leak for the val/test split, but **we did not fix it for the CV folds** — each CV fold's val imputation still uses information beyond what that fold's training data would have available. Since CV is used only as a stability diagnostic and not for model selection, we judged the residual leak there to be low-impact, but it remains unaddressed. The fully-clean fix — per-fold imputation inside a pipeline — is noted as future work.
-
-> Finding and fixing a leak in our own pipeline is, we think, more credible than presenting one that merely looks flawless.
-
----
 
 ## Final Model: XGBoost
 
