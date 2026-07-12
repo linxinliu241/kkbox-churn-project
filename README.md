@@ -148,28 +148,18 @@ style PIPELINE fill:none,stroke:#666,stroke-width:2px,stroke-dasharray: 6 6
 ```
 
 
-## Stage Summary
-
-| Stage | Name | Key Transformations |
-|---|---|---|
-| 1 | **Transaction Data Generation** | Combined `transactions.csv` and `transactions_v2.csv`; removed duplicate transaction records; removed users with more than two transactions on the same day due to ambiguous ordering; sorted transaction history and generated 25 monthly cohort datasets based on membership expiration dates and cohort cutoff dates; constructed churn labels based on future renewal behavior. |
-| 2 | **User Log Data Generation** | Filtered user listening logs to cohort users before each cutoff date; performed cohort-based aggregation on large-scale activity data; generated historical engagement features including listening activity, unique song counts, and usage velocity metrics; merged cohort-level activity information into transaction cohorts. |
-| 3 | **User-Cohort Dataset Construction** | Merged transaction history, user activity, and member information by `msno` and cohort date; constructed user-cohort level observations where each row represents one user in one prediction month; removed unreliable demographic variables with inconsistent temporal interpretation. |
-| 4 | **Feature Engineering & Selection** | Aggregated multiple historical records within each user-cohort into predictive features, including transaction statistics, payment behavior, renewal/cancellation patterns, recency metrics, and engagement trends; evaluated feature relationships with churn outcomes; selected 9 predictive features for modeling. |
-| 5 | **Dataset Preparation** | Applied time-based cohort splitting to simulate future prediction scenarios; used earlier cohorts for training and validation and reserved future cohorts for final evaluation; performed missing value imputation on selected predictors before modeling. |
-
-
 
 ## Data Preparation Summary
 
+
 | Step | Operation |
 |---|---|
-| 1 | Remove unreliable profile features (`bd`, `registration_init_time`) and unused raw fields; retain transaction and activity variables for cohort-based prediction. |
-| 2 | Aggregate multiple transaction records within each user-cohort; generate subscription features including transaction count, payment statistics, renewal ratio, cancellation history, and latest subscription status. |
-| 3 | Aggregate historical listening logs by user-cohort; transform daily activity records into engagement trend features and velocity metrics to capture changes in usage patterns over time rather than only absolute activity levels. |
-| 4 | Create derived recency and behavioral features, including account tenure, days since last activity, payment intensity, and auto-renew behavior. |
-| 5 | Handle missing values in selected predictors; missingness mainly occurred in activity-based features (`total_secs_velocity`, `num_unq_velocity`); apply imputation before modeling. |
-| 6 | Remove redundant features based on correlation analysis (e.g., highly correlated usage velocity metrics); evaluate feature-churn relationships and select 9 predictors for final modeling.
+| 1 | **Transaction data construction**: Combined `transactions.csv` and `transactions_v2.csv`; removed duplicate records and ambiguous same-day transactions; filtered users whose membership expired within each cohort month and constructed churn labels based on no renewal within 30 days after expiration. |
+| 2 | **Transaction feature aggregation**: Aggregated multiple historical transactions within each user-cohort; generated subscription behavior features including `num_transactions`, `total_paid`, `avg_plan_price`, `avg_payment_per_day`, `total_auto_renew`, `total_cancel`, `last_payment_plan_days`, `last_plan_list_price`, `last_is_auto_renew`, and `last_is_cancel`. |
+| 3 | **User activity feature generation**: Filtered `user_logs.csv` before each cohort cutoff date and aggregated listening behavior by user-cohort; created engagement features including `total_secs_velocity` and `num_unq_velocity` to capture changes relative to users' own historical activity baseline rather than absolute usage levels. |
+| 4 | **User-cohort dataset construction**: Integrated transaction, activity, and profile information by `msno` and cohort; aggregated multiple historical records into one observation per user per cohort month across 25 monthly cohorts. |
+| 5 | **Feature cleaning and selection**: Removed unreliable profile variables including `bd` and `registration_init_time`; removed redundant predictors based on feature correlation analysis; evaluated feature-churn relationships and selected 9 predictive features for modeling. |
+| 6 | **Missing value handling and dataset split**: Added missing-value indicators for selected predictors; imputed missing values using training data statistics; created time-based train/validation/test splits for future cohort evaluation. |
 
 
 
