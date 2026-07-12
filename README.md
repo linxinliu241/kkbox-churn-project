@@ -9,13 +9,11 @@ A time-aware validation framework identifies high-risk users with XGBoost achiev
 
 | Component | Description |
 |-----------|-------------|
-| **Objective** | Predict user churn on KKBOX, a music streaming platform, and identify key factors associated with customer retention. |
-| **Dataset** | KKBOX user subscription, transaction, listening activity, and demographic information. The dataset contains highly imbalanced churn labels, with churn users representing a small minority of the population. |
-| **Prediction Task** | Binary classification of whether a user will churn based on historical user information before the prediction period. |
-| **Validation Strategy** | Time-series cross-validation across historical user cohorts was used to evaluate model robustness under realistic future prediction scenarios. |
+
+| **Dataset** | 12.5M users, 25 corhot month from 2015.01 - 2017.02, integrate into 28 features |
+| **Define Churn** | Labeling Churn within future subscription window: churn = 1, non-churn = 0 |
+| **Class balance** | 7.44% churn, 92.56% non-churn |
 | **Models Compared** | Logistic Regression, Random Forest, LightGBM, XGBoost, CatBoost, and a weighted ensemble model. |
-| **Model Selection** | Models were compared based on validation performance using ROC-AUC, PR-AUC, and log loss. Although the ensemble achieved slightly improved validation performance, XGBoost was selected as the final model due to its competitive performance and better interpretability through SHAP analysis. |
-| **Final Evaluation** | The selected XGBoost model was evaluated on three unseen future cohorts to assess generalization performance on users from future time periods. |
 | **Key Result** | Achieved an overall PR-AUC of **0.542** on future cohorts compared with a random baseline of **0.055**, providing approximately a **10× improvement over random guessing**. |
 
 
