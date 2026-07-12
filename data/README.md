@@ -20,8 +20,9 @@ https://www.kaggle.com/c/kkbox-churn-prediction-challenge
 
 Churn labels are generated using a rule-based definition based on subscription expiration:
 
-- A user is considered churned if no renewal occurs within the defined observation window
-- The cutoff date is set at 2017-01-31 to prevent data leakage
+- The cutoff date is set at the last day of a month
+- All user with last expiration date in the following month are included to be labeled
+- A user is labeled as churned if no renewal occurs within 30 days of their last expiration date
 - Label generation is implemented in the data preprocessing pipeline
 
 ---
