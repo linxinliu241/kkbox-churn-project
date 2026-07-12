@@ -9,11 +9,10 @@ A time-aware validation framework identifies high-risk users with XGBoost achiev
 
 | Component | Description |
 |-----------|-------------|
-
-| **Dataset** | 12.5M users, 25 corhot month from 2015.01 - 2017.02, integrate into 28 features |
-| **Define Churn** | Labeling Churn within future subscription window: churn = 1, non-churn = 0 |
-| **Class balance** | 7.44% churn, 92.56% non-churn |
-| **Final Model** | XGBoost with PR-AUC of **0.542**, **10× improvement over random guessing 0.055**   |
+| **Dataset** | ~17M user records across 25 monthly cohorts (2015.01–2017.02), with 28 engineered features |
+| **Churn Definition** | Churn prediction within the future subscription window: churn = 1, non-churn = 0 |
+| **Class Balance** | 7.44% churn vs. 92.56% non-churn |
+| **Final Model** | XGBoost selected with PR-AUC = **0.542**, achieving **10×** improvement over random baseline (**0.055**) |
 
 
 
