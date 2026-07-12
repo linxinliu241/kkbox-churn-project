@@ -100,99 +100,137 @@ Python >= 3.9. All dependencies are listed in [`requirements.txt`](requirements.
 
 
 ## Data Preprocessing Pipeline
+
 ```mermaid
-
 %%{init: {
-
   "flowchart": {
-
     "nodeSpacing": 90,
-
-    "rankSpacing": 70,
-
+    "rankSpacing": 80,
     "curve": "basis"
-
   },
-
   "themeVariables": {
-
     "fontSize": "20px"
-
   }
-
 }}%%
 
 flowchart LR
 
-A["transactions.csv<br/>Payment & renewal"]
 
-B["transactions_v2.csv<br/>Extended transactions"]
+%% =========================
+%% Stage Titles
+%% =========================
+
+T1["Data Integration"]
+
+T2["Feature Engineering and Model Preparation"]
+
+
+
+%% =========================
+%% Data Integration Stage
+%% =========================
+
+A["transactions.csv<br/>Payment records<br/>Renewal / cancellation"]
+
+B["transactions_v2.csv<br/>Extended transaction history"]
 
 C["members.csv<br/>User profile"]
 
 D["user_logs.csv<br/>Listening activity"]
 
-E["Transaction Integration<br/>Merge transaction history"]
 
-F["Target Users<br/>Cohort expiration filtering"]
+E["Transaction Integration<br/>Combine transaction history"]
 
-G["Member Integration<br/>Merge user profile"]
+F["Cohort Construction<br/>Identify users expiring<br/>within each cohort month"]
 
-H["Activity Integration<br/>Aggregate historical listening behavior by user and cohort"]
+G["Profile Integration<br/>Merge member information"]
 
+H["Activity Integration<br/>Attach historical logs<br/>before cutoff date"]
 
-
-subgraph PIPELINE[" "]
-
-direction TB
-
-J["User-Cohort Aggregation<br/>Group historical records by user & cohort<br/>Generate user-level features"]
-
-K["Feature Engineering<br/>Create subscription, payment, and engagement features"]
-
-L["Feature Selection<br/>Analyze feature-churn relationships<br/>Select 9 predictive features"]
-
-M["Final Dataset<br/>Missing value imputation and Data Split<br/>Cohort df_train / df_val / df_test"]
-
-J --> K
-
-K --> L
-
-L --> M
-
-end
+I["User-Cohort Raw Dataset<br/>Integrated transaction, profile,<br/>and activity records"]
 
 
 
 A --> E
-
 B --> E
 
 E --> F
 
 F --> G
-
 C --> G
 
 G --> H
-
 D --> H
 
-H --> J
+H --> I
 
 
+
+%% =========================
+%% Feature Engineering Stage
+%% =========================
+
+subgraph FE[" "]
+direction TB
+
+
+J["User-Cohort Aggregation<br/>Group records by user and cohort<br/>Create one row per user-cohort"]
+
+K["Feature Construction<br/>Generate payment, renewal,<br/>cancellation, and engagement features"]
+
+L["Feature Selection<br/>Analyze feature-churn relationships<br/>Select 9 predictors"]
+
+M["Data Preparation<br/>Missing value imputation<br/>Time-based train / validation / test split"]
+
+N["Final Modeling Dataset<br/>25 monthly cohorts<br/>9 selected features"]
+
+
+J --> K
+K --> L
+L --> M
+M --> N
+
+
+end
+
+
+%% =========================
+%% Main Flow
+%% =========================
+
+I --> J
+
+
+%% Titles connection (invisible logic)
+
+T1 -.-> E
+T2 -.-> J
+
+
+
+%% =========================
+%% Styling
+%% =========================
 
 classDef raw fill:#4F73B8,color:white,stroke:#333,font-size:20px;
 
 classDef process fill:#63A46C,color:white,stroke:#333,font-size:20px;
 
+classDef final fill:#C94C4C,color:white,stroke:#333,font-size:20px;
+
+classDef title fill:none,stroke:none,color:#333,font-size:22px,font-weight:bold;
+
+
 class A,B,C,D raw;
 
-class E,F,G,H,J,K,L,M process;
+class E,F,G,H,I,J,K,L,M process;
 
-style PIPELINE fill:none,stroke:#666,stroke-width:2px,stroke-dasharray: 6 6
+class N final;
+
+class T1,T2 title;
 
 
+style FE fill:none,stroke:#666,stroke-width:2px,stroke-dasharray:6 6
 
 ```
 
