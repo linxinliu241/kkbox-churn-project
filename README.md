@@ -22,10 +22,11 @@ Music streaming platforms acquire millions of users, yet retaining long-term sub
 
 # Data Source
 
-| File | Description |
-|------|-------------|
-| **transactions.csv / transactions_v2.csv** | Subscription and payment history, including plan details, renewal behavior, payment information, and cancellation status. |
-| **user_logs.csv** | User-level daily listening behavior, capturing engagement patterns such as song plays, unique songs, and listening time. |
-| **members.csv** | User demographic and account information used to characterize customer profiles. |
+| File / Source | Description |
+|---|---|
+| **transactions.csv** | User transaction records (~2.1M rows), including payment history, subscription plans, renewal status, and cancellation behavior. |
+| **transactions_v2.csv** | Updated transaction records (~7.1M rows) containing additional subscription activities through 2017-03-31. |
+| **user_logs.csv** | Daily user listening behavior logs (~104.9M rows), including song play counts, unique songs, and total listening duration. |
+| **members.csv** | User demographic and account information (~3.4M users), including city, age, gender, registration method, and account dates. |
 
 
