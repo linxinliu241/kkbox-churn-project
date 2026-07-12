@@ -414,6 +414,8 @@ Reading the SHAP summary: `last_is_auto_renew` has the largest *average* impact 
 │
 ├── data/
 │   ├── README.md
+|   ├── raw/
+|       └── Folder for the raw data from Kaggle
 │   ├── processed/
 │   │   └── Processed cohort-level datasets
 │   │
@@ -473,9 +475,9 @@ Python >= 3.9. All dependencies are listed in [`requirements.txt`](requirements.
    pip install -r requirements.txt
    ```
 
-3. **Run data preparation** (the processed parquet files are not included in this repo — they're too large for GitHub — so this step must be run to generate them)
+3. **Run data preparation** (the processed parquet/csv files are not included in this repo — they're too large for GitHub — so this step must be run to generate them)
    ```
-   Open 4_data_prep.ipynb and run all cells
+   Open and run all cells in 1_transaction_data_generation.ipynb, 2_user_log_data_generation, and 4_data_prep.ipynb
    ```
 
 4. **Run the modeling pipeline**
