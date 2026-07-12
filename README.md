@@ -31,8 +31,11 @@ Music streaming platforms acquire millions of users, yet retaining long-term sub
 | **members.csv** | User demographic and account information (~3.4M users), including city, age, gender, registration method, and account dates. |
 
 
-## Data Preprocessing Pipeline
 
+
+
+
+## Data Preprocessing Pipeline
 ```mermaid
 %%{init: {
   "flowchart": {
@@ -44,124 +47,39 @@ Music streaming platforms acquire millions of users, yet retaining long-term sub
     "fontSize": "20px"
   }
 }}%%
-
 flowchart LR
-
-
-%% =========================
-%% Raw Data Sources
-%% =========================
-
 A["transactions.csv<br/>Payment & renewal"]
-
 B["transactions_v2.csv<br/>Extended transactions"]
-
 C["members.csv<br/>User profile"]
-
 D["user_logs.csv<br/>Listening activity"]
-
-
-
-%% =========================
-%% Data Construction
-%% =========================
-
 E["Transaction Integration<br/>Merge transaction history"]
-
 F["Target Users<br/>Cohort expiration filtering"]
-
 G["Member Integration<br/>Merge user profile"]
-
-H["Activity Integration<br/>Aggregate historical listening behavior
-by user and cohort"]
-
-
-
-%% =========================
-%% Feature Pipeline
-%% =========================
+H["Activity Integration<br/>Aggregate historical listening behavior by user and cohort"]
 
 subgraph PIPELINE[" "]
 direction TB
-
-J["User-Cohort Aggregation
-Group historical records by user & cohort
-Generate user-level features"]
-
-K["Feature Engineering
-Create subscription, payment,
-and engagement features"]
-
-L["Feature Selection
-Analyze feature-churn relationships
-Select 9 predictive features"]
-
+J["User-Cohort Aggregation<br/>Group historical records by user & cohort<br/>Generate user-level features"]
+K["Feature Engineering<br/>Create subscription, payment, and engagement features"]
+L["Feature Selection<br/>Analyze feature-churn relationships<br/>Select 9 predictive features"]
 M["Final Dataset<br/>Missing value imputation and Data Split<br/>Cohort df_train / df_val / df_test"]
-
 J --> K
 K --> L
 L --> M
-
 end
-
-
-
-%% =========================
-%% Connections
-%% =========================
 
 A --> E
 B --> E
-
 E --> F
-
 F --> G
 C --> G
-
 G --> H
 D --> H
-
 H --> J
-
-
-
-%% =========================
-%% Styling
-%% =========================
 
 classDef raw fill:#4F73B8,color:white,stroke:#333,font-size:20px;
 classDef process fill:#63A46C,color:white,stroke:#333,font-size:20px;
-classDef final fill:#C94C4C,color:white,stroke:#333,font-size:20px;
-
-
 class A,B,C,D raw;
-class E,F,G,H,I,J,K,L,M process;
-class O final;
-
-
-%% Dashed outline for right pipeline
-
+class E,F,G,H,J,K,L,M process;
 style PIPELINE fill:none,stroke:#666,stroke-width:2px,stroke-dasharray: 6 6
-
-、、、
-
-## Stage Summary
-
-| Stage | Name | Key Transformations |
-|---|---|---|
-| 1 | **Transaction Data Generation** | Combined `transactions.csv` and `transactions_v2.csv`; removed duplicate transaction records; removed users with more than two transactions on the same day due to ambiguous ordering; sorted transaction history and generated 25 monthly cohort datasets based on membership expiration dates and cohort cutoff dates; constructed churn labels based on future renewal behavior. |
-| 2 | **User Log Data Generation** | Filtered user listening logs to cohort users before each cutoff date; performed cohort-based aggregation on large-scale activity data; generated historical engagement features including listening activity, unique song counts, and usage velocity metrics; merged cohort-level activity information into transaction cohorts. |
-| 3 | **User-Cohort Dataset Construction** | Merged transaction history, user activity, and member information by `msno` and cohort date; constructed user-cohort level observations where each row represents one user in one prediction month; removed unreliable demographic variables with inconsistent temporal interpretation. |
-| 4 | **Feature Engineering & Selection** | Aggregated multiple historical records within each user-cohort into predictive features, including transaction statistics, payment behavior, renewal/cancellation patterns, recency metrics, and engagement trends; evaluated feature relationships with churn outcomes; selected 9 predictive features for modeling. |
-| 5 | **Dataset Preparation** | Applied time-based cohort splitting to simulate future prediction scenarios; used earlier cohorts for training and validation and reserved future cohorts for final evaluation; performed missing value imputation on selected predictors before modeling. |
-
-
-
-
-
-
-
-
-
-
-
+```
