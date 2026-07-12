@@ -36,49 +36,51 @@ Music streaming platforms acquire millions of users, yet retaining long-term sub
 ## Data Pipeline
 
 ```mermaid
-flowchart TD
+flowchart LR
 
 %% Raw Sources
 
-A["transactions.csv<br/>Payment records<br/>Renewal / cancellation behavior"]
+A["transactions.csv<br/>Payment & renewal"]
 
-B["transactions_v2.csv<br/>Extended transaction history"]
+B["transactions_v2.csv<br/>Extended transactions"]
 
-C["members.csv<br/>User demographic information"]
+C["members.csv<br/>User profile"]
 
-D["user_logs.csv<br/>Daily listening activity<br/>Engagement behavior"]
+D["user_logs.csv<br/>Listening activity"]
 
 
 %% Data Construction
 
-E["Transaction History Integration<br/>Combine transactions.csv<br/>and transactions_v2.csv"]
+E["Transaction Integration<br/>Merge transactions"]
 
-F["Target User Identification<br/>Select users with membership<br/>expiration in each cohort month"]
+F["Target Users<br/>Cohort expiration filtering"]
 
-G["User Profile Integration<br/>Merge member information<br/>by user ID"]
+G["Member Integration<br/>Merge profiles"]
 
-H["Activity Integration<br/>Retrieve user logs before cutoff date<br/>for target users"]
+H["Activity Integration<br/>Historical logs"]
+
+I["User-Cohort Dataset<br/>User × Cohort"]
 
 
 %% Feature Engineering
 
-I["User-Cohort Level Dataset<br/>One row = one user in one cohort month"]
+J["Aggregation<br/>Generate user features"]
 
-J["Feature Engineering<br/>Aggregate transaction records<br/>and generate behavioral features"]
+K["Feature Engineering<br/>Behavior & payment features"]
 
-K["Feature Selection<br/>Analyze feature-churn relationship<br/>Select 9 predictive features"]
+L["Feature Selection<br/>9 predictors"]
 
 
 %% Preparation
 
-L["Missing Value Imputation"]
+M["Imputation"]
 
-M["Cohort-based Split<br/>Train / Validation / Test"]
+N["Cohort Split<br/>Train / Val / Test"]
 
 
 %% Final
 
-N["Final Modeling Dataset<br/>25 monthly cohorts<br/>9 selected features"]
+O["Final Dataset<br/>25 cohorts<br/>9 features"]
 
 
 %% Connections
@@ -87,6 +89,7 @@ A --> E
 B --> E
 
 E --> F
+
 F --> G
 C --> G
 
@@ -97,10 +100,11 @@ H --> I
 
 I --> J
 J --> K
-
 K --> L
+
 L --> M
 M --> N
+N --> O
 
 
 %% Style
@@ -110,10 +114,5 @@ classDef process fill:#63A46C,color:white,stroke:#333;
 classDef final fill:#C94C4C,color:white,stroke:#333;
 
 class A,B,C,D raw;
-class E,F,G,H,I,J,K,L,M process;
-class N final;
-
-
-
-
-
+class E,F,G,H,I,J,K,L,M,N process;
+class O final;
