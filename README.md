@@ -13,8 +13,7 @@ A time-aware validation framework identifies high-risk users with XGBoost achiev
 | **Dataset** | 12.5M users, 25 corhot month from 2015.01 - 2017.02, integrate into 28 features |
 | **Define Churn** | Labeling Churn within future subscription window: churn = 1, non-churn = 0 |
 | **Class balance** | 7.44% churn, 92.56% non-churn |
-| **Models Compared** | Logistic Regression, Random Forest, LightGBM, XGBoost, CatBoost, and a weighted ensemble model. |
-| **Key Result** | Achieved an overall PR-AUC of **0.542** on future cohorts compared with a random baseline of **0.055**, providing approximately a **10× improvement over random guessing**. |
+| **Final Model** | XGBoost with PR-AUC of **0.542**, **10× improvement over random guessing 0.055**   |
 
 
 
