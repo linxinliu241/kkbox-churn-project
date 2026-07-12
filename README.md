@@ -117,18 +117,13 @@ flowchart LR
 
 
 %% =========================
-%% Stage Titles
+%% Stage 1: Data Integration
 %% =========================
 
-T1["Data Integration"]
+subgraph DATA["Data Integration and Cohort Construction"]
 
-T2["Feature Engineering and Model Preparation"]
+direction LR
 
-
-
-%% =========================
-%% Data Integration Stage
-%% =========================
 
 A["transactions.csv<br/>Payment records<br/>Renewal / cancellation"]
 
@@ -165,12 +160,16 @@ D --> H
 H --> I
 
 
+end
+
+
 
 %% =========================
-%% Feature Engineering Stage
+%% Stage 2: Feature Engineering
 %% =========================
 
-subgraph FE[" "]
+subgraph FEATURE["Feature Engineering and Model Preparation"]
+
 direction TB
 
 
@@ -185,6 +184,7 @@ M["Data Preparation<br/>Missing value imputation<br/>Time-based train / validati
 N["Final Modeling Dataset<br/>25 monthly cohorts<br/>9 selected features"]
 
 
+
 J --> K
 K --> L
 L --> M
@@ -194,17 +194,12 @@ M --> N
 end
 
 
+
 %% =========================
 %% Main Flow
 %% =========================
 
 I --> J
-
-
-%% Titles connection (invisible logic)
-
-T1 -.-> E
-T2 -.-> J
 
 
 
@@ -218,8 +213,6 @@ classDef process fill:#63A46C,color:white,stroke:#333,font-size:20px;
 
 classDef final fill:#C94C4C,color:white,stroke:#333,font-size:20px;
 
-classDef title fill:none,stroke:none,color:#333,font-size:22px,font-weight:bold;
-
 
 class A,B,C,D raw;
 
@@ -227,11 +220,15 @@ class E,F,G,H,I,J,K,L,M process;
 
 class N final;
 
-class T1,T2 title;
 
 
-style FE fill:none,stroke:#666,stroke-width:2px,stroke-dasharray:6 6
+%% Remove left stage box, keep right stage box
 
+style DATA fill:none,stroke:none
+
+style FEATURE fill:none,stroke:#666,stroke-width:2px,stroke-dasharray:6 6
+
+```
 ```
 
 
