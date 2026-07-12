@@ -35,68 +35,108 @@ Music streaming platforms acquire millions of users, yet retaining long-term sub
 
 ## Data Pipeline
 
-The data processing pipeline transforms raw KKBOX data sources into a user-cohort level modeling dataset. The pipeline consists of data filtering, integration, feature engineering, missing value handling, and cohort-based splitting.
+```mermaid
+flowchart LR
 
-![Data Pipeline](figures/data_pipeline.png)
+%% =========================
+%% Raw Data Sources
+%% =========================
 
-### Pipeline Overview
+subgraph Raw["Raw Data Sources"]
+    T["Transactions Data<br/>Payment records<br/>Renewal / cancellation behavior<br/>Membership expiration"]
+    L["User Logs Data<br/>Daily listening activity<br/>Song plays & engagement"]
+    M["Members Data<br/>Demographic information<br/>Registration details"]
+    Y["Train/Test Data<br/>Cohort-based churn labels"]
+end
 
-**1. Raw Data Sources**
 
-The project uses four raw data sources:
+%% =========================
+%% Churn Target Construction
+%% =========================
 
-- **Transactions Data**: User subscription transactions, including payment records, renewal behavior, and cancellation information.
-- **User Logs Data**: Daily listening activity records, including song plays, unique songs, and listening duration.
-- **Members Data**: User demographic and registration information.
-- **Train/Test Data**: Cohort-based churn labels and prediction periods.
+subgraph Target["Churn Target Construction"]
+    C1["Cohort-based Filtering<br/>Select transactions before cutoff date<br/>Identify users expiring within cohort month"]
+    
+    C2["User Identification<br/>Match target users with member profiles"]
+    
+    C3["Activity Selection<br/>Retrieve user logs before cutoff date<br/>Select relevant listening history"]
+end
 
----
 
-**2. Churn Target Construction & Data Integration**
+%% =========================
+%% Integration
+%% =========================
 
-For each cohort month:
+subgraph Integration["Data Integration"]
+    I["Merge Transaction, Profile,<br/>and Activity Data<br/>User × Cohort Level Dataset"]
+end
 
-- Identify transactions before the cohort cutoff date.
-- Select users whose membership expires within the cohort month as prediction targets.
-- Retrieve corresponding user information from the member table.
-- Identify listening activities occurring before the cutoff date for target users.
-- Integrate transaction history, user profile information, and listening behaviors at the user-cohort level.
 
----
+%% =========================
+%% Feature Engineering
+%% =========================
 
-**3. Feature Engineering**
+subgraph Feature["Feature Engineering"]
+    F1["Aggregate User Transactions<br/>Multiple records → user-level features"]
+    
+    F2["Behavioral Features<br/>Payment patterns<br/>Renewal behavior<br/>Cancellation history<br/>Listening engagement"]
+    
+    F3["Feature Selection<br/>Analyze feature–churn relationship<br/>Select 9 predictive features"]
+end
 
-Multiple transaction and activity records are aggregated into user-level features within each cohort.
 
-Generated features include:
+%% =========================
+%% Preparation
+%% =========================
 
-- Number of transactions
-- Total payment amount
-- Average plan price
-- Total auto-renew count
-- Total cancellation count
-- Last payment plan duration
-- Last plan price
-- Last auto-renew status
-- Last cancellation status
-- Days since last transaction
-- Days to membership expiration
-- Average payment per day
+subgraph Preparation["Model Preparation"]
+    P1["Missing Value Imputation"]
+    
+    P2["Cohort-based Split<br/>Train / Validation / Test"]
+end
 
-The final dataset is constructed at the **user-cohort level**, covering **25 monthly cohorts**.
 
-Feature selection was performed by analyzing feature relationships with churn outcomes, resulting in **9 selected predictors** used for modeling.
+%% =========================
+%% Final Dataset
+%% =========================
 
----
+Final["Final Modeling Dataset<br/>User-Cohort Level<br/>25 Monthly Cohorts<br/>9 Selected Features"]
 
-**4. Data Preparation**
 
-- Missing values were imputed for selected predictors.
-- Cohort-based splitting was applied to simulate real-world prediction scenarios:
+%% Connections
 
-  - Training cohorts: earlier time periods
-  - Validation cohorts: subsequent cohorts for model selection
-  - Test cohorts: future unseen cohorts for final evaluation
+T --> C1
+L --> C3
+M --> C2
+Y --> C1
+
+C1 --> C2
+C2 --> C3
+C3 --> I
+
+I --> F1
+F1 --> F2
+F2 --> F3
+
+F3 --> P1
+P1 --> P2
+
+P2 --> Final
+
+
+%% Styling
+
+classDef raw fill:#4F73B8,color:white,stroke:#333;
+classDef process fill:#63A46C,color:white,stroke:#333;
+classDef data fill:#D9864A,color:white,stroke:#333;
+classDef final fill:#C94C4C,color:white,stroke:#333;
+
+class T,L,M,Y raw;
+class C1,C2,C3,F1,F2,F3,P1,P2 process;
+class I data;
+class Final final;
+
+
 
 
 
