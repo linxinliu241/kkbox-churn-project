@@ -165,20 +165,14 @@ style PIPELINE fill:none,stroke:#666,stroke-width:2px,stroke-dasharray: 6 6
 
 ## Feature Engineering
 
-### Feature Categories (9 total)
+After aggregating historical transaction and activity records at the user-cohort level, we transformed raw behavioral data into predictive features. The goal was to capture not only users' current subscription status, but also changes in payment behavior, renewal patterns, and engagement trends before churn.
 
-| Category | Features | Intuition |
-|----------|:--------:|---------|
-| **Transaction behavior** | 4 | `last_is_cancel`, `last_is_auto_renew`, `ratio_auto_renew`, `avg_plan_price` |
-| **Tenure & timing** | 2 | `days_since_first_trans`, `avg_payment_per_day` |
-| **Usage velocity** | 2 | `total_secs_velocity`, `num_unq_velocity` — recent activity vs the user's own baseline |
-| **Engagement recency** | 1 | `days_since_last_use` |
+Features were grouped into four categories:
 
-
-### Feature Distributions vs. Churn
-
-![feature distribution](figures/fea_plots.png)
-
+- **Transaction behavior:** Capture subscription decisions and payment patterns, including renewal and cancellation signals.
+- **Tenure & timing:** Capture customer lifetime and subscription recency.
+- **Usage velocity:** Measure changes in recent engagement relative to each user's own historical baseline.
+- **Engagement recency:** Capture inactivity signals before churn.
 
 ### Velocity, Not Volume
 
@@ -192,6 +186,23 @@ Absolute listening time is meaningless without context — 400 minutes is a lot 
 A value well below 1 means a user is fading relative to their own norm — an early churn signal that shows up before they actually cancel.
 
 ---
+
+### Feature Categories (9 total)
+
+| Category | # Features | Selected Features | Interpretation |
+|---|---|---|---|
+| Transaction behavior | 4 | `last_is_cancel`, `last_is_auto_renew`, `ratio_auto_renew`, `avg_plan_price` | Subscription commitment and payment behavior |
+| Tenure & timing | 2 | `days_since_first_trans`, `avg_payment_per_day` | Customer lifetime and payment intensity |
+| Usage velocity | 2 | `total_secs_velocity`, `num_unq_velocity` | Recent engagement change relative to personal baseline |
+| Engagement recency | 1 | `days_since_last_use` | Recent inactivity before churn |
+
+
+### Feature Distributions vs. Churn
+
+![feature distribution](figures/fea_plots.png)
+
+
+
 
 ## Modeling Pipeline
 
