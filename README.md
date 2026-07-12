@@ -36,71 +36,99 @@ Music streaming platforms acquire millions of users, yet retaining long-term sub
 ## Data Pipeline
 
 ```mermaid
-flowchart TD
+flowchart LR
 
+%% ====================
 %% Raw Sources
+%% ====================
 
-A["transactions.csv<br/>Payment records<br/>Renewal / cancellation behavior"]
+subgraph RAW["Raw Data Sources"]
+direction TB
 
-B["transactions_v2.csv<br/>Extended transaction history"]
+T1["transactions.csv<br/>Payment records<br/>Renewal / cancellation behavior"]
 
-C["members.csv<br/>User demographic information"]
+T2["transactions_v2.csv<br/>Extended transaction history"]
 
-D["user_logs.csv<br/>Daily listening activity<br/>Engagement behavior"]
+M["members.csv<br/>User demographic information"]
+
+L["user_logs.csv<br/>Daily listening activity"]
+
+end
 
 
+%% ====================
 %% Data Construction
+%% ====================
 
-E["Transaction History Integration<br/>Combine transactions.csv<br/>and transactions_v2.csv"]
+subgraph CON["Data Construction"]
+direction TB
 
-F["Target User Identification<br/>Select users with membership<br/>expiration in each cohort month"]
+TX["Transaction Integration<br/>Combine transaction history"]
 
-G["User Profile Integration<br/>Merge member information<br/>by user ID"]
+TARGET["Cohort Target Construction<br/>Select users expiring within cohort month"]
 
-H["Activity Integration<br/>Retrieve user logs before cutoff date<br/>for target users"]
+PROFILE["Member Integration<br/>Merge user profile information"]
+
+ACT["Activity Integration<br/>Retrieve logs before cutoff date"]
+
+end
 
 
+%% ====================
 %% Feature Engineering
+%% ====================
 
-I["User-Cohort Level Dataset<br/>One row = one user in one cohort month"]
+subgraph FE["Feature Engineering"]
+direction TB
 
-J["Feature Engineering<br/>Aggregate transaction records<br/>and generate behavioral features"]
+AGG["User-Cohort Aggregation<br/>Multiple records → user-level features"]
 
-K["Feature Selection<br/>Analyze feature-churn relationship<br/>Select 9 predictive features"]
+FEATURE["Behavioral Features<br/>Payment patterns<br/>Renewal behavior<br/>Cancellation history<br/>Engagement trends"]
+
+SELECT["Feature Selection<br/>Select 9 predictive features"]
+
+end
 
 
+%% ====================
 %% Preparation
+%% ====================
 
-L["Missing Value Imputation"]
+subgraph PREP["Model Preparation"]
+direction TB
 
-M["Cohort-based Split<br/>Train / Validation / Test"]
+IMP["Missing Value Imputation"]
+
+SPLIT["Cohort-based Split<br/>Train / Validation / Test"]
+
+end
 
 
-%% Final
+FINAL["Final Modeling Dataset<br/>25 monthly cohorts<br/>9 selected features"]
 
-N["Final Modeling Dataset<br/>25 monthly cohorts<br/>9 selected features"]
 
 
 %% Connections
 
-A --> E
-B --> E
+T1 --> TX
+T2 --> TX
 
-E --> F
-F --> G
-C --> G
+TX --> TARGET
 
-G --> H
-D --> H
+TARGET --> PROFILE
+M --> PROFILE
 
-H --> I
+PROFILE --> ACT
+L --> ACT
 
-I --> J
-J --> K
+ACT --> AGG
 
-K --> L
-L --> M
-M --> N
+AGG --> FEATURE
+FEATURE --> SELECT
+
+SELECT --> IMP
+IMP --> SPLIT
+SPLIT --> FINAL
 
 
 %% Style
@@ -109,6 +137,6 @@ classDef raw fill:#4F73B8,color:white,stroke:#333;
 classDef process fill:#63A46C,color:white,stroke:#333;
 classDef final fill:#C94C4C,color:white,stroke:#333;
 
-class A,B,C,D raw;
-class E,F,G,H,I,J,K,L,M process;
-class N final;
+class T1,T2,M,L raw;
+class TX,TARGET,PROFILE,ACT,AGG,FEATURE,SELECT,IMP,SPLIT process;
+class FINAL final;
