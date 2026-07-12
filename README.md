@@ -113,3 +113,125 @@ class A,B,C,D raw;
 class E,F,G,H,I,J,K,L,M process;
 class N final;
 
+
+
+
+
+## Data Pipeline
+
+```mermaid
+flowchart LR
+
+%% =====================
+%% Raw Data Sources
+%% =====================
+
+subgraph RAW[" "]
+direction TB
+
+A["transactions.csv<br/>Payment records<br/>Renewal / cancellation behavior"]
+
+B["transactions_v2.csv<br/>Extended transaction history"]
+
+C["members.csv<br/>User demographic information"]
+
+D["user_logs.csv<br/>Daily listening activity"]
+
+end
+
+
+%% =====================
+%% Data Construction
+%% =====================
+
+subgraph CON[" "]
+direction TB
+
+E["Transaction Integration<br/>Combine transactions.csv<br/>and transactions_v2.csv"]
+
+F["Target User Identification<br/>Select users expiring<br/>within cohort month"]
+
+G["Member Integration<br/>Merge user profile<br/>information"]
+
+H["Activity Integration<br/>Retrieve user logs<br/>before cutoff date"]
+
+I["User-Cohort Dataset<br/>One row = one user<br/>one cohort month"]
+
+end
+
+
+%% =====================
+%% Feature Engineering
+%% =====================
+
+subgraph FE[" "]
+direction TB
+
+J["User-Level Aggregation<br/>Multiple records → user features"]
+
+K["Feature Engineering<br/>Payment patterns<br/>Renewal behavior<br/>Cancellation history<br/>Engagement trends"]
+
+L["Feature Selection<br/>Feature-churn analysis<br/>Select 9 predictors"]
+
+end
+
+
+%% =====================
+%% Model Preparation
+%% =====================
+
+subgraph PREP[" "]
+direction TB
+
+M["Missing Value Imputation"]
+
+N["Cohort-based Split<br/>Train / Validation / Test"]
+
+end
+
+
+%% =====================
+%% Final Dataset
+%% =====================
+
+O["Final Modeling Dataset<br/>25 monthly cohorts<br/>9 selected features"]
+
+
+%% =====================
+%% Connections
+%% =====================
+
+A --> E
+B --> E
+
+E --> F
+
+C --> G
+F --> G
+
+G --> H
+D --> H
+
+H --> I
+
+I --> J
+J --> K
+K --> L
+
+L --> M
+M --> N
+N --> O
+
+
+%% =====================
+%% Styling
+%% =====================
+
+classDef raw fill:#4F73B8,color:white,stroke:#333;
+classDef process fill:#63A46C,color:white,stroke:#333;
+classDef final fill:#C94C4C,color:white,stroke:#333;
+
+class A,B,C,D raw;
+class E,F,G,H,I,J,K,L,M,N process;
+class O final;
+
