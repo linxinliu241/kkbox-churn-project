@@ -31,3 +31,34 @@ Music streaming platforms acquire millions of users, yet retaining long-term sub
 | **members.csv** | User demographic and account information (~3.4M users), including city, age, gender, registration method, and account dates. |
 
 
+## Data Preprocessing
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
