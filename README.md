@@ -83,13 +83,19 @@ H["Activity Integration<br/>Historical listening logs"]
 subgraph PIPELINE[" "]
 direction TB
 
-J["Aggregation<br/>Generate user-level features"]
+J["User-Cohort Aggregation
+Group historical records by user & cohort
+Generate user-level features"]
 
-K["Feature Engineering<br/>Payment, renewal,<br/>cancellation & engagement"]
+K["Feature Engineering
+Create subscription, payment,
+and engagement features"]
 
-L["Feature Selection<br/>Select 9 predictors"]
+L["Feature Selection
+Analyze feature-churn relationships
+Select 9 predictive features"]
 
-M["Final Dataset<br/>Missing value imputation<br/>Cohort df_train / df_val / df_test"]
+M["Final Dataset<br/>Missing value imputation and Data Split<br/>Cohort df_train / df_val / df_test"]
 
 J --> K
 K --> L
@@ -135,3 +141,10 @@ class O final;
 %% Dashed outline for right pipeline
 
 style PIPELINE fill:none,stroke:#666,stroke-width:2px,stroke-dasharray: 6 6
+
+
+
+
+
+
+
