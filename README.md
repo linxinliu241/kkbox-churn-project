@@ -19,7 +19,7 @@ A time-aware validation framework identifies high-risk users with XGBoost achiev
 7. [A Data Leak We Found and Fixed](#a-data-leak-we-found-and-fixed)
 8. [Feature Engineering](#feature-engineering)
 9. [Modeling Pipeline](#modeling-pipeline)
-10. [Models Evaluated](#models-evaluated)
+10. [Model Evaluation](#model-evaluation)
 11. [Model Selection: Validation, Not Cross-Validation](#model-selection-validation-not-cross-validation)
 12. [Final Model: XGBoost](#final-model-xgboost)
 13. [Can an Ensemble Do Better?](#can-an-ensemble-do-better)
@@ -298,7 +298,7 @@ The modeling notebook (`5_modeling.ipynb`) runs the same protocol for every mode
 
 ---
 
-## Models Evaluated
+## Model Evaluation
 
 | Model | Type | Key Properties |
 |-------|------|----------------|
