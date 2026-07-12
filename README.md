@@ -10,20 +10,22 @@ A time-aware validation framework identifies high-risk users with XGBoost achiev
 
 ## Table of Contents
 
-1. [Project Overview](#project-overview)
-2. [Data Sources](#data-sources)
-3. [Churn Definition](#churn-definition)
-4. [Data Pipeline](#data-pipeline)
-5. [Feature Engineering](#feature-engineering)
-6. [Preventing Data Leakage](#preventing-data-leakage)
-7. [Modeling Pipeline](#modeling-pipeline)
-8. [Models Evaluated](#models-evaluated)
-9. [Model Selection: Validation, Not Cross-Validation](#model-selection-validation-not-cross-validation)
-10. [Final Model: XGBoost](#final-model-xgboost)
-11. [Can an Ensemble Do Better?](#can-an-ensemble-do-better)
-12. [Explaining Predictions: SHAP → LLM](#explaining-predictions-shap--llm)
-13. [Repository Structure](#repository-structure)
-14. [Getting Started](#getting-started)
+1. [Project Summary](#project-summary)
+2. [Project Overview](#project-overview)
+3. [Data Sources](#data-sources)
+4. [Churn Definition](#churn-definition)
+5. [Data Pipeline](#data-pipeline)
+6. [Data Preparation Summary](#data-preparation-summary)
+7. [A Data Leak We Found and Fixed](#a-data-leak-we-found-and-fixed)
+8. [Feature Engineering](#feature-engineering)
+9. [Modeling Pipeline](#modeling-pipeline)
+10. [Models Evaluated](#models-evaluated)
+11. [Model Selection: Validation, Not Cross-Validation](#model-selection-validation-not-cross-validation)
+12. [Final Model: XGBoost](#final-model-xgboost)
+13. [Can an Ensemble Do Better?](#can-an-ensemble-do-better)
+14. [Explaining Predictions: SHAP → LLM](#explaining-predictions-shap--llm)
+15. [Repository Structure](#repository-structure)
+16. [Getting Started](#getting-started)
 
 
 
@@ -31,7 +33,7 @@ A time-aware validation framework identifies high-risk users with XGBoost achiev
 
 | Component | Description |
 |-----------|-------------|
-| **Dataset** | ~17M transaction and usage records → 25 monthly cohorts (Feb 2015 – Feb 2017) |
+| **Dataset** | **Dataset** | ~17M user-cohort observations across 25 monthly cohorts (Feb 2015 – Feb 2017) |
 | **Target** | `is_churn` — binary (1 = did not renew within 30 days of expiry, 0 = renewed) |
 | **Class balance** | Churn rate falls over time: ~8.0% (train) → 6.5% (val) → 5.5% (test) |
 | **Final Model** | XGBoost selected on PR-AUC = **0.542**, achieving **9.8×** improvement over the base rate |
@@ -49,7 +51,7 @@ The goal is to identify users at risk of leaving before subscription renewal and
 
 
 
-## Data Source
+## Data Sources
 
 | File / Source | Description |
 |---|---|
@@ -73,7 +75,7 @@ This cohort-based labeling strategy enables consistent evaluation across time an
 
 
 
-## Data Preprocessing Pipeline
+## Data Pipeline
 
 ```mermaid
 %%{init: {
@@ -405,21 +407,36 @@ Reading the SHAP summary: `last_is_auto_renew` has the largest *average* impact 
 ```
 ├── README.md
 ├── Executive_Summary.pdf
+├── requirements.txt
 │
-├── 1_transaction_data_generation.ipynb   # Raw transactions → per-cohort features
-├── 2_user_log_data_generation.ipynb      # Raw usage logs → velocity features
-├── 3_data_exploration.ipynb              # EDA + feature selection
-├── 4_data_prep.ipynb                     # Merge, engineer, split → train/val/test.parquet
-├── 5_modeling.ipynb                      # 5 models, time-series CV, tuning, SHAP
-├── 6_ensemble.ipynb                      # Weighted ensemble of the 5 models
-├── 7_LLM_churn_explanation.ipynb         # Per-user SHAP → LLM retention reports
+├── notebooks/
+│   ├── 01_transaction_data_generation.ipynb
+│   ├── 02_user_log_data_generation.ipynb
+│   ├── 03_data_exploration.ipynb
+│   ├── 04_data_preparation.ipynb
+│   ├── 05_modeling.ipynb
+│   ├── 06_ensemble.ipynb
+│   └── 07_LLM_churn_explanation.ipynb
 │
-├── processed/                            # train/val/test.parquet
-├── model_results/                        # Saved models, metrics, plots
-│   ├── final_model.pkl                   # Winner, trained on train+val (for the LLM layer)
-│   └── models_train_only/                # All 5 models on train only (for the ensemble)
+├── data/
+│   └── processed/
+│       ├── train.parquet
+│       ├── val.parquet
+│       └── test.parquet
 │
-└── images/                               # README figures
+├── models/
+│   ├── final_model.pkl
+│   └── models_train_only/
+│
+├── results/
+│   ├── metrics/
+│   └── figures/
+│
+└── images/
+    ├── fea_plots.png
+    ├── CV_results.png
+    ├── metric_curve_test.png
+    └── SHAP_plot.png
 ```
 
 ---
