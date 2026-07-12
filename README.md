@@ -33,110 +33,22 @@ Music streaming platforms acquire millions of users, yet retaining long-term sub
 
 ## Data Preprocessing Pipeline
 
-## Data Pipeline
+transactions.csv
+        \
+         → transaction history
+        /
+transactions_v2.csv
 
-```mermaid
-flowchart LR
+transaction history
+        +
+        +
+members.csv
+        ↓
+user profile integrated
 
-%% ====================
-%% Raw Sources
-%% ====================
-
-subgraph RAW["Raw Data Sources"]
-direction TB
-
-T1["transactions.csv<br/>Payment records<br/>Renewal / cancellation behavior"]
-
-T2["transactions_v2.csv<br/>Extended transaction history"]
-
-M["members.csv<br/>User demographic information"]
-
-L["user_logs.csv<br/>Daily listening activity"]
-
-end
-
-
-%% ====================
-%% Data Construction
-%% ====================
-
-subgraph CON["Data Construction"]
-direction TB
-
-TX["Transaction Integration<br/>Combine transaction history"]
-
-TARGET["Cohort Target Construction<br/>Select users expiring within cohort month"]
-
-PROFILE["Member Integration<br/>Merge user profile information"]
-
-ACT["Activity Integration<br/>Retrieve logs before cutoff date"]
-
-end
-
-
-%% ====================
-%% Feature Engineering
-%% ====================
-
-subgraph FE["Feature Engineering"]
-direction TB
-
-AGG["User-Cohort Aggregation<br/>Multiple records → user-level features"]
-
-FEATURE["Behavioral Features<br/>Payment patterns<br/>Renewal behavior<br/>Cancellation history<br/>Engagement trends"]
-
-SELECT["Feature Selection<br/>Select 9 predictive features"]
-
-end
-
-
-%% ====================
-%% Preparation
-%% ====================
-
-subgraph PREP["Model Preparation"]
-direction TB
-
-IMP["Missing Value Imputation"]
-
-SPLIT["Cohort-based Split<br/>Train / Validation / Test"]
-
-end
-
-
-FINAL["Final Modeling Dataset<br/>25 monthly cohorts<br/>9 selected features"]
-
-
-
-%% Connections
-
-T1 --> TX
-T2 --> TX
-
-TX --> TARGET
-
-TARGET --> PROFILE
-M --> PROFILE
-
-PROFILE --> ACT
-L --> ACT
-
-ACT --> AGG
-
-AGG --> FEATURE
-FEATURE --> SELECT
-
-SELECT --> IMP
-IMP --> SPLIT
-SPLIT --> FINAL
-
-
-%% Style
-
-classDef raw fill:#4F73B8,color:white,stroke:#333;
-classDef process fill:#63A46C,color:white,stroke:#333;
-classDef final fill:#C94C4C,color:white,stroke:#333;
-
-class T1,T2,M,L raw;
-class TX,TARGET,PROFILE,ACT,AGG,FEATURE,SELECT,IMP,SPLIT process;
-class FINAL final;
+user profile integrated
+        +
+        +
+user_logs.csv
+        ↓
+complete user-cohort dataset
