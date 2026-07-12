@@ -33,8 +33,6 @@ Music streaming platforms acquire millions of users, yet retaining long-term sub
 
 ## Data Preprocessing Pipeline
 
-## Data Preprocessing Pipeline
-
 ```mermaid
 %%{init: {
   "flowchart": {
@@ -115,6 +113,8 @@ C --> G
 
 G --> H
 D --> H
+
+H --> J
 
 
 
