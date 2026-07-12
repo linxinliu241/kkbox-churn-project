@@ -403,7 +403,6 @@ Reading the SHAP summary: `last_is_auto_renew` has the largest *average* impact 
 
 
 
-## Repository Structure
 
 ## Repository Structure
 
