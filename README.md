@@ -93,14 +93,11 @@ K["Feature Engineering<br/>Payment, renewal,<br/>cancellation & engagement"]
 
 L["Feature Selection<br/>Select 9 predictors"]
 
-M["Data Preparation<br/>Missing value imputation<br/>Cohort train / validation / test"]
-
-O["Final Dataset<br/>25 cohorts<br/>9 selected features"]
+M["Final Dataset<br/>Missing value imputation<br/>Cohort df_train / df_val / df_test"]
 
 J --> K
 K --> L
 L --> M
-M --> O
 
 end
 
