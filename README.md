@@ -57,16 +57,16 @@ The goal is to identify users at risk of leaving before subscription renewal and
 |---|---|
 | **transactions.csv** | User transaction records (~21.5M rows), including payment history, subscription plans, renewal status, and cancellation behavior. |
 | **transactions_v2.csv** | Updated transaction records (~1.4M rows) containing additional subscription activities through 2017-03-31. |
-| **user_logs.csv** | Daily user listening behavior logs (~1M rows), including song play counts, unique songs, and total listening duration. |
+| **user_logs.csv** | Daily user listening behavior logs (30 gb file), including song play counts, unique songs, and total listening duration. |
 | **members_v3.csv** | User demographic and account information (~6.8M rows), including city, age, gender, registration method, and account dates. |
 
 
 
 ## Churn Definition
 
-The original KKBOX competition dataset provides churn labels for a subset of users, but does not provide a consistent labeling framework across all monthly cohorts. To support a cohort-based expanding window prediction setting, we constructed churn labels using future renewal behavior.
+The original KKBOX competition dataset provides churn labels for a subset of users, specifically the users that had an expiration date in February 2017. They provide a scala file for label generation. We pulled inspiration from this but had to make changes as it did not work correctly for different cases. In order to implement our sorting strategy, we had to drop the users that had more than 2 renewal/cancel transactions in a single day (only some users). To support the creation of a time-agnostic model, we constructed a pipeline to take in the transaction data and produce 25 monthly cohorts: Feb 2016 - Feb 2017
 
-For each cohort month, users whose membership expired within that month were selected as prediction targets. A user was labeled as:
+For each cohort month, users whose last expiration date (from the perspective of the cutoff) falls within that month were selected as prediction targets. A user was labeled as:
 
 - `churn = 1`: no renewal transaction occurred within 30 days after membership expiration.
 - `churn = 0`: the user renewed successfully within the 30-day post-expiration window.
