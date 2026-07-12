@@ -203,33 +203,36 @@ style PIPELINE fill:none,stroke:#666,stroke-width:2px,stroke-dasharray: 6 6
 ```mermaid
 %%{init: {
   "flowchart": {
-    "nodeSpacing": 80,
-    "rankSpacing": 90,
+    "nodeSpacing": 90,
+    "rankSpacing": 80,
     "curve": "basis"
   },
   "themeVariables": {
-    "fontSize": "18px"
+    "fontSize": "20px"
   }
 }}%%
+
 
 flowchart LR
 
 
 %% =========================
-%% Stage 1
+%% Raw Data Sources
 %% =========================
-
-subgraph DATA["Data Aggregation and Cohort Construction"]
-direction TB
 
 A["transactions.csv<br/>Payment records<br/>Renewal / cancellation"]
 
 B["transactions_v2.csv<br/>Extended transaction history"]
 
-C["members_v3.csv<br/>User profile"]
+C["members.csv<br/>User profile"]
 
 D["user_logs.csv<br/>Listening activity"]
 
+
+
+%% =========================
+%% Data Aggregation Stage
+%% =========================
 
 E["Transaction Integration<br/>Combine transaction history"]
 
@@ -239,31 +242,16 @@ G["Profile Integration<br/>Merge member information"]
 
 H["Activity Integration<br/>Attach historical logs<br/>before cutoff date"]
 
-I["User-Cohort Raw Dataset<br/>User × Cohort records"]
-
-
-A --> E
-B --> E
-
-E --> F
-
-F --> G
-C --> G
-
-G --> H
-D --> H
-
-H --> I
-
-end
+I["User-Cohort Raw Dataset<br/>Integrated transaction, profile,<br/>and activity records"]
 
 
 
 %% =========================
-%% Stage 2
+%% Feature Stage
 %% =========================
 
 subgraph FEATURE["Feature Engineering and Model Preparation"]
+
 direction TB
 
 J["User-Cohort Aggregation<br/>Group records by user and cohort<br/>Create one row per user-cohort"]
@@ -287,8 +275,21 @@ end
 
 
 %% =========================
-%% Main Flow
+%% Connections
 %% =========================
+
+A --> E
+B --> E
+
+E --> F
+
+F --> G
+C --> G
+
+G --> H
+D --> H
+
+H --> I
 
 I --> J
 
@@ -298,22 +299,23 @@ I --> J
 %% Styling
 %% =========================
 
-classDef raw fill:#4F73B8,color:white,stroke:#333,font-size:18px;
-classDef process fill:#63A46C,color:white,stroke:#333,font-size:18px;
-classDef final fill:#C94C4C,color:white,stroke:#333,font-size:18px;
+classDef raw fill:#4F73B8,color:white,stroke:#333,font-size:20px;
+
+classDef process fill:#63A46C,color:white,stroke:#333,font-size:20px;
+
+classDef final fill:#C94C4C,color:white,stroke:#333,font-size:20px;
 
 
 class A,B,C,D raw;
+
 class E,F,G,H,I,J,K,L,M process;
+
 class N final;
 
 
-style DATA fill:none,stroke:#666,stroke-width:2px,stroke-dasharray:6 6
 style FEATURE fill:none,stroke:#666,stroke-width:2px,stroke-dasharray:6 6
 
 ```
-
-
 
 
 
