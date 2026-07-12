@@ -14,6 +14,11 @@ This project uses the KKBOX Churn Prediction dataset, which includes multiple ta
 All datasets are provided by the Kaggle competition:
 https://www.kaggle.com/c/kkbox-churn-prediction-challenge
 
+We do not use the train.csv or test.csv provided in the Kaggle competition as we found that their label generation was 
+not consistent with the desired churn labeling and cohort definition. 
+
+We implement a churn labeling process inspired by the churn label generation scala file prodivede in the Kaggle competition.
+
 ---
 
 ## 2. Label Definition (Churn Construction Policy)
