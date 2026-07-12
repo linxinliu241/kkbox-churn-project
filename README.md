@@ -26,66 +26,6 @@ The goal is to identify users at risk of leaving before subscription renewal and
 
 
 
-## Repository Structure
-
-```
-├── README.md
-├── Executive_Summary.pdf
-│
-├── 1_transaction_data_generation.ipynb   # Raw transactions → per-cohort features
-├── 2_user_log_data_generation.ipynb      # Raw usage logs → velocity features
-├── 3_data_exploration.ipynb              # EDA + feature selection
-├── 4_data_prep.ipynb                     # Merge, engineer, split → train/val/test.parquet
-├── 5_modeling.ipynb                      # 5 models, time-series CV, tuning, SHAP
-├── 6_ensemble.ipynb                      # Weighted ensemble of the 5 models
-├── 7_LLM_churn_explanation.ipynb         # Per-user SHAP → LLM retention reports
-│
-├── processed/                            # train/val/test.parquet
-├── model_results/                        # Saved models, metrics, plots
-│   ├── final_model.pkl                   # Winner, trained on train+val (for the LLM layer)
-│   └── models_train_only/                # All 5 models on train only (for the ensemble)
-│
-└── images/                               # README figures
-```
-
----
-
-## Getting Started
-
-### Requirements
-
-Python >= 3.9. All dependencies are listed in [`requirements.txt`](requirements.txt).
-
-### Quick Start
-
-1. **Clone the repository**
-   ```bash
-   git clone <repo-url>
-   cd churn-prediction
-   ```
-
-2. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Run data preparation** (the processed parquet files are not included in this repo — they're too large for GitHub — so this step must be run to generate them)
-   ```
-   Open 4_data_prep.ipynb and run all cells
-   ```
-
-4. **Run the modeling pipeline**
-   ```
-   Open 5_modeling.ipynb and run all cells
-   ```
-   This trains all five models under the time-based protocol, tunes the winner on validation, evaluates once on test, and saves models + SHAP plots to `model_results/`.
-
-5. **Generate explanation reports** (optional)
-   ```
-   Open 7_LLM_churn_explanation.ipynb and run all cells
-   ```
-
----
 
 
 
@@ -431,6 +371,71 @@ Trained model → per-user SHAP → structured evidence → LLM → plain-langua
 - **A limit we state, not hide.** SHAP measures the model's *attribution*, not real-world *causation*, and its additive form can't fully express conditional interactions. Reports describe what the model weighted, and hedge any business reading ("may suggest," not "because").
 
 Reading the SHAP summary: `last_is_auto_renew` has the largest *average* impact (it applies to everyone, and passive renewal pulls risk down), while `last_is_cancel` is rare but delivers the single hardest push toward churn when it occurs — average impact and peak impact are different questions.
+
+---
+
+
+
+
+
+## Repository Structure
+
+```
+├── README.md
+├── Executive_Summary.pdf
+│
+├── 1_transaction_data_generation.ipynb   # Raw transactions → per-cohort features
+├── 2_user_log_data_generation.ipynb      # Raw usage logs → velocity features
+├── 3_data_exploration.ipynb              # EDA + feature selection
+├── 4_data_prep.ipynb                     # Merge, engineer, split → train/val/test.parquet
+├── 5_modeling.ipynb                      # 5 models, time-series CV, tuning, SHAP
+├── 6_ensemble.ipynb                      # Weighted ensemble of the 5 models
+├── 7_LLM_churn_explanation.ipynb         # Per-user SHAP → LLM retention reports
+│
+├── processed/                            # train/val/test.parquet
+├── model_results/                        # Saved models, metrics, plots
+│   ├── final_model.pkl                   # Winner, trained on train+val (for the LLM layer)
+│   └── models_train_only/                # All 5 models on train only (for the ensemble)
+│
+└── images/                               # README figures
+```
+
+---
+
+## Getting Started
+
+### Requirements
+
+Python >= 3.9. All dependencies are listed in [`requirements.txt`](requirements.txt).
+
+### Quick Start
+
+1. **Clone the repository**
+   ```bash
+   git clone <repo-url>
+   cd churn-prediction
+   ```
+
+2. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+3. **Run data preparation** (the processed parquet files are not included in this repo — they're too large for GitHub — so this step must be run to generate them)
+   ```
+   Open 4_data_prep.ipynb and run all cells
+   ```
+
+4. **Run the modeling pipeline**
+   ```
+   Open 5_modeling.ipynb and run all cells
+   ```
+   This trains all five models under the time-based protocol, tunes the winner on validation, evaluates once on test, and saves models + SHAP plots to `model_results/`.
+
+5. **Generate explanation reports** (optional)
+   ```
+   Open 7_LLM_churn_explanation.ipynb and run all cells
+   ```
 
 ---
 
