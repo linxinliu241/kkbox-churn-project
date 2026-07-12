@@ -91,10 +91,10 @@ Python >= 3.9. All dependencies are listed in [`requirements.txt`](requirements.
 
 | File / Source | Description |
 |---|---|
-| **transactions.csv** | User transaction records (~2.1M rows), including payment history, subscription plans, renewal status, and cancellation behavior. |
-| **transactions_v2.csv** | Updated transaction records (~7.1M rows) containing additional subscription activities through 2017-03-31. |
-| **user_logs.csv** | Daily user listening behavior logs (~104.9M rows), including song play counts, unique songs, and total listening duration. |
-| **members.csv** | User demographic and account information (~3.4M users), including city, age, gender, registration method, and account dates. |
+| **transactions.csv** | User transaction records (~1M rows), including payment history, subscription plans, renewal status, and cancellation behavior. |
+| **transactions_v2.csv** | Updated transaction records (~1M rows) containing additional subscription activities through 2017-03-31. |
+| **user_logs.csv** | Daily user listening behavior logs (~1M rows), including song play counts, unique songs, and total listening duration. |
+| **members_v3.csv** | User demographic and account information (~1M rows), including city, age, gender, registration method, and account dates. |
 
 
 ## Data Preprocessing Pipeline
@@ -224,7 +224,7 @@ A["transactions.csv<br/>Payment records<br/>Renewal / cancellation"]
 
 B["transactions_v2.csv<br/>Extended transaction history"]
 
-C["members.csv<br/>User profile"]
+C["members_v3.csv<br/>User profile"]
 
 D["user_logs.csv<br/>Listening activity"]
 
