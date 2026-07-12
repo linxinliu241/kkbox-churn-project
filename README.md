@@ -96,3 +96,17 @@ style PIPELINE fill:none,stroke:#666,stroke-width:2px,stroke-dasharray: 6 6
 | 4 | **Feature Engineering & Selection** | Aggregated multiple historical records within each user-cohort into predictive features, including transaction statistics, payment behavior, renewal/cancellation patterns, recency metrics, and engagement trends; evaluated feature relationships with churn outcomes; selected 9 predictive features for modeling. |
 | 5 | **Dataset Preparation** | Applied time-based cohort splitting to simulate future prediction scenarios; used earlier cohorts for training and validation and reserved future cohorts for final evaluation; performed missing value imputation on selected predictors before modeling. |
 
+
+
+## Data Preparation Summary
+
+| Step | Operation |
+|---|---|
+| 1 | Removed unreliable demographic features (`bd`, `registration_init_time`) because age and registration dates were not consistent with monthly cohort prediction settings and could introduce temporal ambiguity. |
+| 2 | Aggregated historical transaction records at the user-cohort level; generated subscription features including transaction count, total payment, average plan price, renewal ratio, cancellation behavior, and latest subscription status. |
+| 3 | Generated user activity trend features from listening history; created velocity-based metrics to capture changes in engagement over time rather than only absolute usage levels (e.g., whether a user's listening activity is declining or remaining stable). |
+| 4 | Created derived behavioral features including `ratio_auto_renew` and recency features such as `days_since_first_trans` and `days_since_last_use` to capture user loyalty and engagement decay. |
+| 5 | Evaluated feature relationships with churn outcomes and removed redundant features using correlation analysis; dropped `num_100_velocity` due to high correlation with other usage velocity metrics. |
+| 6 | Selected final 9 predictors for modeling: `avg_plan_price`, `avg_payment_per_day`, `days_since_first_trans`, `days_since_last_use`, `ratio_auto_renew`, `total_secs_velocity`, `num_unq_velocity`, `last_is_auto_renew`, and `last_is_cancel`. |
+| 7 | Added missing-value indicators for selected activity features and applied train-based imputation; prepared final train/validation/test datasets using time-based cohort splits. |
+
