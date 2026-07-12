@@ -405,39 +405,52 @@ Reading the SHAP summary: `last_is_auto_renew` has the largest *average* impact 
 
 ## Repository Structure
 
+## Repository Structure
+
 ```
 ├── README.md
-├── Executive_Summary.pdf
+├── KKBox Churn Prediction Executive Summary.pdf
+├── Final Presentation.pdf
 ├── requirements.txt
 │
-├── notebooks/
-│   ├── 01_transaction_data_generation.ipynb
-│   ├── 02_user_log_data_generation.ipynb
-│   ├── 03_data_exploration.ipynb
-│   ├── 04_data_preparation.ipynb
-│   ├── 05_modeling.ipynb
-│   ├── 06_ensemble.ipynb
-│   └── 07_LLM_churn_explanation.ipynb
-│
 ├── data/
-│   └── processed/
-│       ├── train.parquet
-│       ├── val.parquet
-│       └── test.parquet
+│   ├── README.md
+│   ├── processed/
+│   │   └── Processed cohort-level datasets
+│   │
+│   └── sampled/
+│       └── Sampled datasets for visualization and testing
 │
-├── models/
-│   ├── final_model.pkl
-│   └── models_train_only/
+├── figures/
+│   ├── CV_results.png
+│   ├── SHAP_plot.png
+│   ├── bin_fea_barplot.png
+│   ├── cont_fea_boxplot.png
+│   ├── fea_plots.png
+│   └── metric_curve_test.png
 │
-├── results/
-│   ├── metrics/
-│   └── figures/
+├── notebooks/
+│   ├── 1_transaction_data_generation.ipynb
+│   ├── 2_user_log_data_generation.ipynb
+│   ├── 3_data_exploration.ipynb
+│   ├── 4_data_prep.ipynb
+│   ├── 5_modeling.ipynb
+│   ├── 6_ensemble_modeling.ipynb
+│   └── 7_LLM_churn_explanation.ipynb
 │
-└── images/
-    ├── fea_plots.png
-    ├── CV_results.png
-    ├── metric_curve_test.png
-    └── SHAP_plot.png
+└── results/
+    ├── cv_comparison.csv
+    ├── cv_folds_LogReg.csv
+    ├── cv_folds_RandomForest.csv
+    ├── cv_folds_LightGBM.csv
+    ├── cv_folds_XGBoost.csv
+    ├── cv_folds_CatBoost.csv
+    ├── final_model.pkl
+    ├── model_meta.json
+    ├── shap_bar.png
+    ├── shap_dependency_top4.png
+    ├── shap_mean_abs.csv
+    └── shap_summary_beeswarm.png
 ```
 
 ---
