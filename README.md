@@ -265,7 +265,7 @@ Therefore, we created velocity features that measure recent activity relative to
 | `total_secs_velocity` | Recent 14-day listening time / previous 30-day listening time |
 | `num_unq_velocity` | Recent 14-day unique tracks / previous 30-day unique tracks |
 
-Values below 1 indicate declining engagement relative to a user's normal behavior, providing an early signal of potential churn.
+Values below 0.5 indicate declining engagement relative to a user's normal behavior, providing an early signal of potential churn.
 
 
 ### Feature Distributions vs. Churn
