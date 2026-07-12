@@ -44,7 +44,7 @@ A time-agnostic validation framework identifies high-risk users with XGBoost ach
 
 Music streaming platforms acquire millions of users, yet retaining long-term subscribers remains a major challenge. This project develops a machine learning framework to predict user churn on KKBOX by leveraging subscription patterns, listening behaviors, and user profile information.
 
-The goal is to identify users at risk of leaving before subscription renewal and uncover behavioral patterns associated with churn. The pipeline uses a time-aware evaluation framework to ensure realistic future prediction and reliable model assessment.
+The goal is to identify users at risk of leaving before subscription renewal and uncover behavioral patterns associated with churn. The pipeline uses a time-agnostic evaluation framework to ensure realistic future prediction and reliable model assessment.
 
 
 
@@ -55,10 +55,10 @@ The goal is to identify users at risk of leaving before subscription renewal and
 
 | File / Source | Description |
 |---|---|
-| **transactions.csv** | User transaction records (~1M rows), including payment history, subscription plans, renewal status, and cancellation behavior. |
-| **transactions_v2.csv** | Updated transaction records (~1M rows) containing additional subscription activities through 2017-03-31. |
+| **transactions.csv** | User transaction records (~21.5M rows), including payment history, subscription plans, renewal status, and cancellation behavior. |
+| **transactions_v2.csv** | Updated transaction records (~1.4M rows) containing additional subscription activities through 2017-03-31. |
 | **user_logs.csv** | Daily user listening behavior logs (~1M rows), including song play counts, unique songs, and total listening duration. |
-| **members_v3.csv** | User demographic and account information (~1M rows), including city, age, gender, registration method, and account dates. |
+| **members_v3.csv** | User demographic and account information (~6.8M rows), including city, age, gender, registration method, and account dates. |
 
 
 
