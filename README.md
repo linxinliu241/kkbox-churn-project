@@ -200,6 +200,72 @@ Because the tree models are effectively tied, XGBoost is chosen for its narrow e
 
 ---
 
+## A Data Leak We Found and Fixed
+
+Missing `days_since_last_use` values were originally imputed with a sentinel computed separately within each split — train, val, and test were each imputed using their own maximum. Because the val and test sentinels were computed from data that includes information not available at prediction time, this was a leak.
+
+The fix, in `5_modeling.ipynb`, changes only how val and test are imputed: the sentinel is now the maximum `days_since_last_use` seen in the **training data only**, and that same train-derived value is used to fill missing values in train, val, and test alike. The train split's imputed values are unchanged by this fix — train was already being imputed with its own max, which is the same value it's imputed with now. What changed is val (and test): instead of being imputed with the max computed over val itself, it's now imputed with the max computed over train.
+
+This fix addresses the leak for the val/test split, but **we did not fix it for the CV folds** — each CV fold's val imputation still uses information beyond what that fold's training data would have available. Since CV is used only as a stability diagnostic and not for model selection, we judged the residual leak there to be low-impact, but it remains unaddressed. The fully-clean fix — per-fold imputation inside a pipeline — is noted as future work.
+
+> Finding and fixing a leak in our own pipeline is, we think, more credible than presenting one that merely looks flawless.
+
+---
+
+## Final Model: XGBoost
+
+The tuned XGBoost is refit on train + val, then evaluated once on the three held-out test cohorts (Dec 2016 – Feb 2017).
+
+![Final Test ROC and PR curves](images/final_test_curves.png)
+
+| Cohort | Churn Rate | ROC-AUC | Log Loss | PR-AUC |
+|--------|:----------:|:-------:|:--------:|:------:|
+| Dec 2016 | 8.06% | 0.788 | 0.204 | 0.624 |
+| Jan 2017 | 4.49% | 0.879 | 0.121 | 0.475 |
+| Feb 2017 | 3.94% | 0.858 | 0.119 | 0.379 |
+| **Overall (pooled)** | **5.51%** | **0.830** | **0.148** | **0.542** |
+
+**PR-AUC of 0.542 against a 5.5% base rate is a ~9.8× lift over random guessing.** PR-AUC falls month over month, but so does the churn rate — a rarer target lowers the ceiling on PR-AUC. Read as a multiple over each month's base rate, performance is far more stable than the raw score suggests.
+
+*Why PR-AUC and not ROC-AUC:* at a 5.5% base rate, ROC-AUC flatters — a model can post an impressive number while still missing most churners. PR-AUC reflects what a retention team actually cares about: how many of the users we flag are truly about to leave.
+
+---
+
+## Can an Ensemble Do Better?
+
+We also built a weighted ensemble of all five models, with weights fit on performance across the **time-series CV folds** rather than on the validation set. That freed up validation to serve as a held-out set for comparing the ensemble against XGBoost, so the numbers below are reported on the **validation data**, not test. The four tree models split the weight almost evenly; Logistic Regression earned almost none.
+
+| Metric | Ensemble (val) | XGBoost (val) | |
+|--------|:--------:|:-------:|---|
+| PR-AUC | 0.5459 | 0.5420 | ensemble +0.0039 |
+| Log Loss | 0.1432 | 0.1479 | ensemble better |
+| ROC-AUC | 0.8296 | 0.8303 | XGBoost better |
+
+*(Note: these figures carry over from the previous version of this table — since the evaluation split changed from test to validation, they should be double-checked against a re-run of `6_ensemble.ipynb` before this is treated as final.)*
+
+The ensemble wins on two metrics and loses on one — too small and too mixed to call a clear improvement. More importantly, explaining an ensemble per user requires a model-agnostic method orders of magnitude slower than `TreeExplainer`. **We shipped the single XGBoost model**: the gain wasn't worth giving up per-user explainability.
+
+---
+
+## Explaining Predictions: SHAP → LLM
+
+A score alone isn't actionable. The final layer (`7_LLM_churn_explanation.ipynb`) turns each prediction into a retention report in plain language.
+
+![SHAP Summary](images/shap_summary.png)
+
+The pipeline is deliberately fenced:
+
+```
+Trained model → per-user SHAP → structured evidence → LLM → plain-language report
+```
+
+- **SHAP decides the facts.** For a given user, SHAP produces which features moved the model's prediction and in which direction. Because SHAP is computed per user, it already reflects that user's full feature context.
+- **The LLM only translates.** It receives the structured evidence — nothing else — and writes the report. It cannot invent a driver the model didn't use, and the structured evidence ships alongside every report so a human can audit the narrative against the model.
+- **A limit we state, not hide.** SHAP measures the model's *attribution*, not real-world *causation*, and its additive form can't fully express conditional interactions. Reports describe what the model weighted, and hedge any business reading ("may suggest," not "because").
+
+Reading the SHAP summary: `last_is_auto_renew` has the largest *average* impact (it applies to everyone, and passive renewal pulls risk down), while `last_is_cancel` is rare but delivers the single hardest push toward churn when it occurs — average impact and peak impact are different questions.
+
+---
 
 
 
