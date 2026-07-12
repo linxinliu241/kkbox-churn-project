@@ -99,53 +99,101 @@ Python >= 3.9. All dependencies are listed in [`requirements.txt`](requirements.
 
 ## Data Preprocessing Pipeline
 ```mermaid
+
 %%{init: {
+
   "flowchart": {
+
     "nodeSpacing": 90,
+
     "rankSpacing": 70,
+
     "curve": "basis"
+
   },
+
   "themeVariables": {
+
     "fontSize": "20px"
+
   }
+
 }}%%
+
 flowchart LR
+
 A["transactions.csv<br/>Payment & renewal"]
+
 B["transactions_v2.csv<br/>Extended transactions"]
+
 C["members.csv<br/>User profile"]
+
 D["user_logs.csv<br/>Listening activity"]
+
 E["Transaction Integration<br/>Merge transaction history"]
+
 F["Target Users<br/>Cohort expiration filtering"]
+
 G["Member Integration<br/>Merge user profile"]
+
 H["Activity Integration<br/>Aggregate historical listening behavior by user and cohort"]
 
+
+
 subgraph PIPELINE[" "]
+
 direction TB
+
 J["User-Cohort Aggregation<br/>Group historical records by user & cohort<br/>Generate user-level features"]
+
 K["Feature Engineering<br/>Create subscription, payment, and engagement features"]
+
 L["Feature Selection<br/>Analyze feature-churn relationships<br/>Select 9 predictive features"]
+
 M["Final Dataset<br/>Missing value imputation and Data Split<br/>Cohort df_train / df_val / df_test"]
+
 J --> K
+
 K --> L
+
 L --> M
+
 end
 
+
+
 A --> E
+
 B --> E
+
 E --> F
+
 F --> G
+
 C --> G
+
 G --> H
+
 D --> H
+
 H --> J
 
+
+
 classDef raw fill:#4F73B8,color:white,stroke:#333,font-size:20px;
+
 classDef process fill:#63A46C,color:white,stroke:#333,font-size:20px;
+
 class A,B,C,D raw;
+
 class E,F,G,H,J,K,L,M process;
+
 style PIPELINE fill:none,stroke:#666,stroke-width:2px,stroke-dasharray: 6 6
 
+
+
 ```
+
 
 
 ## Data Preprocessing Pipeline
@@ -169,7 +217,7 @@ flowchart LR
 %% Stage 1
 %% =========================
 
-subgraph DATA["Data Aggregation & Cohort Construction"]
+subgraph DATA["Data Aggregation and Cohort Construction"]
 direction TB
 
 A["transactions.csv<br/>Payment records<br/>Renewal / cancellation"]
@@ -190,6 +238,7 @@ G["Profile Integration<br/>Merge member information"]
 H["Activity Integration<br/>Attach historical logs<br/>before cutoff date"]
 
 I["User-Cohort Raw Dataset<br/>User × Cohort records"]
+
 
 A --> E
 B --> E
@@ -212,7 +261,7 @@ end
 %% Stage 2
 %% =========================
 
-subgraph FEATURE["Feature Engineering & Model Preparation"]
+subgraph FEATURE["Feature Engineering and Model Preparation"]
 direction TB
 
 J["User-Cohort Aggregation<br/>Group records by user and cohort<br/>Create one row per user-cohort"]
@@ -232,6 +281,7 @@ L --> M
 M --> N
 
 end
+
 
 
 %% =========================
@@ -258,6 +308,10 @@ class N final;
 
 style DATA fill:none,stroke:#666,stroke-width:2px,stroke-dasharray:6 6
 style FEATURE fill:none,stroke:#666,stroke-width:2px,stroke-dasharray:6 6
+
+```
+
+
 
 
 
