@@ -3,7 +3,7 @@
 
 **Authors:** [Yingying Yang](https://github.com/your-handle) · [Darryl Jent](https://github.com/darryl-handle) · [Linxin Liu](https://github.com/linxin-handle) · [Kaiwen Jin](https://github.com/kaiwen-handle) · [Albert Lu](https://github.com/albert-handle)
 
-📄[Executive Summary](KKBox%20Churn%20Prediction%20Executive%20Summary.pdf)
+📄 [Executive Summary](KKBox%20Churn%20Prediction%20Executive%20Summary.pdf)
 
 A time-aware validation framework identifies high-risk users with XGBoost achieving strong predictive performance while maintaining model interpretability.
 
