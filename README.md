@@ -148,6 +148,118 @@ style PIPELINE fill:none,stroke:#666,stroke-width:2px,stroke-dasharray: 6 6
 ```
 
 
+## Data Preprocessing Pipeline
+
+```mermaid
+%%{init: {
+  "flowchart": {
+    "nodeSpacing": 80,
+    "rankSpacing": 90,
+    "curve": "basis"
+  },
+  "themeVariables": {
+    "fontSize": "18px"
+  }
+}}%%
+
+flowchart LR
+
+
+%% =========================
+%% Stage 1
+%% =========================
+
+subgraph DATA["Data Aggregation & Cohort Construction"]
+direction TB
+
+A["transactions.csv<br/>Payment records<br/>Renewal / cancellation"]
+
+B["transactions_v2.csv<br/>Extended transaction history"]
+
+C["members.csv<br/>User profile"]
+
+D["user_logs.csv<br/>Listening activity"]
+
+
+E["Transaction Integration<br/>Combine transaction history"]
+
+F["Cohort Construction<br/>Identify users expiring<br/>within each cohort month"]
+
+G["Profile Integration<br/>Merge member information"]
+
+H["Activity Integration<br/>Attach historical logs<br/>before cutoff date"]
+
+I["User-Cohort Raw Dataset<br/>User × Cohort records"]
+
+A --> E
+B --> E
+
+E --> F
+
+F --> G
+C --> G
+
+G --> H
+D --> H
+
+H --> I
+
+end
+
+
+
+%% =========================
+%% Stage 2
+%% =========================
+
+subgraph FEATURE["Feature Engineering & Model Preparation"]
+direction TB
+
+J["User-Cohort Aggregation<br/>Group records by user and cohort<br/>Create one row per user-cohort"]
+
+K["Feature Construction<br/>Generate payment, renewal,<br/>cancellation, and engagement features"]
+
+L["Feature Selection<br/>Analyze feature-churn relationships<br/>Select 9 predictors"]
+
+M["Data Preparation<br/>Missing value imputation<br/>Time-based train / validation / test split"]
+
+N["Final Modeling Dataset<br/>25 monthly cohorts<br/>9 selected features"]
+
+
+J --> K
+K --> L
+L --> M
+M --> N
+
+end
+
+
+%% =========================
+%% Main Flow
+%% =========================
+
+I --> J
+
+
+
+%% =========================
+%% Styling
+%% =========================
+
+classDef raw fill:#4F73B8,color:white,stroke:#333,font-size:18px;
+classDef process fill:#63A46C,color:white,stroke:#333,font-size:18px;
+classDef final fill:#C94C4C,color:white,stroke:#333,font-size:18px;
+
+
+class A,B,C,D raw;
+class E,F,G,H,I,J,K,L,M process;
+class N final;
+
+
+style DATA fill:none,stroke:#666,stroke-width:2px,stroke-dasharray:6 6
+style FEATURE fill:none,stroke:#666,stroke-width:2px,stroke-dasharray:6 6
+
+、、、
 
 ## Data Preparation Summary
 
