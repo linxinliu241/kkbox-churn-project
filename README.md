@@ -38,7 +38,9 @@ Music streaming platforms acquire millions of users, yet retaining long-term sub
 ```mermaid
 flowchart LR
 
-%% Raw Sources
+%% =========================
+%% Raw + Integration (Left)
+%% =========================
 
 A["transactions.csv<br/>Payment & renewal"]
 
@@ -48,8 +50,6 @@ C["members.csv<br/>User profile"]
 
 D["user_logs.csv<br/>Listening activity"]
 
-
-%% Data Construction
 
 E["Transaction Integration<br/>Merge transactions"]
 
@@ -62,7 +62,12 @@ H["Activity Integration<br/>Historical logs"]
 I["User-Cohort Dataset<br/>User × Cohort"]
 
 
-%% Feature Engineering
+%% =========================
+%% Right Vertical Pipeline
+%% =========================
+
+subgraph RIGHT[" "]
+direction TB
 
 J["Aggregation<br/>Generate user features"]
 
@@ -70,20 +75,24 @@ K["Feature Engineering<br/>Behavior & payment features"]
 
 L["Feature Selection<br/>9 predictors"]
 
-
-%% Preparation
-
 M["Imputation"]
 
 N["Cohort Split<br/>Train / Val / Test"]
 
-
-%% Final
-
 O["Final Dataset<br/>25 cohorts<br/>9 features"]
 
+J --> K
+K --> L
+L --> M
+M --> N
+N --> O
 
+end
+
+
+%% =========================
 %% Connections
+%% =========================
 
 A --> E
 B --> E
@@ -99,15 +108,11 @@ D --> H
 H --> I
 
 I --> J
-J --> K
-K --> L
-
-L --> M
-M --> N
-N --> O
 
 
+%% =========================
 %% Style
+%% =========================
 
 classDef raw fill:#4F73B8,color:white,stroke:#333;
 classDef process fill:#63A46C,color:white,stroke:#333;
