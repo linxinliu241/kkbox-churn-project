@@ -20,7 +20,9 @@ A time-aware validation framework identifies high-risk users with XGBoost achiev
 
 ## Project Overview
 
-Music streaming platforms acquire millions of users, yet retaining long-term subscribers remains a major challenge. This project develops a machine learning framework to predict user churn on KKBOX by leveraging subscription patterns, listening behaviors, and profile information. The analysis aims to uncover key drivers of customer retention and identify users at risk of leaving the platform.
+Music streaming platforms acquire millions of users, yet retaining long-term subscribers remains a major challenge. This project develops a machine learning framework to predict user churn on KKBOX by leveraging subscription patterns, listening behaviors, and user profile information.
+
+The goal is to identify users at risk of leaving before subscription renewal and uncover behavioral patterns associated with churn. The pipeline uses a time-aware evaluation framework to ensure realistic future prediction and reliable model assessment.
 
 
 
