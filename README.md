@@ -33,16 +33,17 @@ Music streaming platforms acquire millions of users, yet retaining long-term sub
 
 ## Data Preprocessing Pipeline
 
-## Data Pipeline
+## Data Preprocessing Pipeline
 
 ```mermaid
 %%{init: {
   "flowchart": {
-    "nodeSpacing": 80,
-    "rankSpacing": 100
+    "nodeSpacing": 90,
+    "rankSpacing": 70,
+    "curve": "basis"
   },
   "themeVariables": {
-    "fontSize": "18px"
+    "fontSize": "20px"
   }
 }}%%
 
@@ -62,6 +63,7 @@ C["members.csv<br/>User profile"]
 D["user_logs.csv<br/>Listening activity"]
 
 
+
 %% =========================
 %% Data Construction
 %% =========================
@@ -79,7 +81,7 @@ I["User-Cohort Dataset<br/>User × Cohort"]
 
 
 %% =========================
-%% Right Vertical Pipeline
+%% Feature Pipeline
 %% =========================
 
 subgraph PIPELINE[" "]
@@ -91,17 +93,14 @@ K["Feature Engineering<br/>Payment, renewal,<br/>cancellation & engagement"]
 
 L["Feature Selection<br/>Select 9 predictors"]
 
-M["Missing Value Imputation"]
+M["Data Preparation<br/>Missing value imputation<br/>Cohort train / validation / test"]
 
-N["Cohort Split<br/>Train / Validation / Test"]
-
-O["Final Modeling Dataset<br/>25 cohorts<br/>9 selected features"]
+O["Final Dataset<br/>25 cohorts<br/>9 selected features"]
 
 J --> K
 K --> L
 L --> M
-M --> N
-N --> O
+M --> O
 
 end
 
@@ -129,23 +128,19 @@ I --> J
 
 
 %% =========================
-%% Style
+%% Styling
 %% =========================
 
-classDef raw fill:#4F73B8,color:white,stroke:#333,font-size:18px;
-classDef process fill:#63A46C,color:white,stroke:#333,font-size:18px;
-classDef final fill:#C94C4C,color:white,stroke:#333,font-size:18px;
+classDef raw fill:#4F73B8,color:white,stroke:#333,font-size:20px;
+classDef process fill:#63A46C,color:white,stroke:#333,font-size:20px;
+classDef final fill:#C94C4C,color:white,stroke:#333,font-size:20px;
 
 
 class A,B,C,D raw;
-class E,F,G,H,I,J,K,L,M,N process;
+class E,F,G,H,I,J,K,L,M process;
 class O final;
 
 
-
-%% =========================
-%% Remove yellow background
-%% Add dashed outline for pipeline
-%% =========================
+%% Dashed outline for right pipeline
 
 style PIPELINE fill:none,stroke:#666,stroke-width:2px,stroke-dasharray: 6 6
