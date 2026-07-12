@@ -72,7 +72,8 @@ F["Target Users<br/>Cohort expiration filtering"]
 
 G["Member Integration<br/>Merge user profile"]
 
-H["Activity Integration<br/>Historical listening logs"]
+H["Activity Integration<br/>Aggregate historical listening behavior
+by user and cohort"]
 
 
 
