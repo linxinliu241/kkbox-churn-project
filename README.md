@@ -216,7 +216,7 @@ This fix addresses the leak for the val/test split, but **we did not fix it for 
 
 The tuned XGBoost is refit on train + val, then evaluated once on the three held-out test cohorts (Dec 2016 – Feb 2017).
 
-![Final Test ROC and PR curves](figures/Metric_curves.png)
+![Final Test ROC and PR curves](figures/metric_curve_test.png)
 
 | Cohort | Churn Rate | ROC-AUC | Log Loss | PR-AUC |
 |--------|:----------:|:-------:|:--------:|:------:|
