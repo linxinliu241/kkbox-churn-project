@@ -31,7 +31,72 @@ Music streaming platforms acquire millions of users, yet retaining long-term sub
 | **members.csv** | User demographic and account information (~3.4M users), including city, age, gender, registration method, and account dates. |
 
 
-## Data Preprocessing
+## Data Preprocessing Pipeline
+
+## Data Pipeline
+
+The data processing pipeline transforms raw KKBOX data sources into a user-cohort level modeling dataset. The pipeline consists of data filtering, integration, feature engineering, missing value handling, and cohort-based splitting.
+
+![Data Pipeline](figures/data_pipeline.png)
+
+### Pipeline Overview
+
+**1. Raw Data Sources**
+
+The project uses four raw data sources:
+
+- **Transactions Data**: User subscription transactions, including payment records, renewal behavior, and cancellation information.
+- **User Logs Data**: Daily listening activity records, including song plays, unique songs, and listening duration.
+- **Members Data**: User demographic and registration information.
+- **Train/Test Data**: Cohort-based churn labels and prediction periods.
+
+---
+
+**2. Churn Target Construction & Data Integration**
+
+For each cohort month:
+
+- Identify transactions before the cohort cutoff date.
+- Select users whose membership expires within the cohort month as prediction targets.
+- Retrieve corresponding user information from the member table.
+- Identify listening activities occurring before the cutoff date for target users.
+- Integrate transaction history, user profile information, and listening behaviors at the user-cohort level.
+
+---
+
+**3. Feature Engineering**
+
+Multiple transaction and activity records are aggregated into user-level features within each cohort.
+
+Generated features include:
+
+- Number of transactions
+- Total payment amount
+- Average plan price
+- Total auto-renew count
+- Total cancellation count
+- Last payment plan duration
+- Last plan price
+- Last auto-renew status
+- Last cancellation status
+- Days since last transaction
+- Days to membership expiration
+- Average payment per day
+
+The final dataset is constructed at the **user-cohort level**, covering **25 monthly cohorts**.
+
+Feature selection was performed by analyzing feature relationships with churn outcomes, resulting in **9 selected predictors** used for modeling.
+
+---
+
+**4. Data Preparation**
+
+- Missing values were imputed for selected predictors.
+- Cohort-based splitting was applied to simulate real-world prediction scenarios:
+
+  - Training cohorts: earlier time periods
+  - Validation cohorts: subsequent cohorts for model selection
+  - Test cohorts: future unseen cohorts for final evaluation
 
 
 
