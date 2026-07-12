@@ -221,6 +221,9 @@ style FEATURE fill:none,stroke:#666,stroke-width:2px,stroke-dasharray:6 6
 | 6 | **Missing value handling and dataset split**: Imputed missing values using training-set information only and created time-based train, validation, and test cohorts for future prediction evaluation. |
 
 
+---
+
+
 ## A Data Leak We Found and Fixed
 
 Missing `days_since_last_use` values were originally imputed with a sentinel computed separately within each split — train, val, and test were each imputed using their own maximum. Because the val and test sentinels were computed from data that includes information not available at prediction time, this was a leak.
