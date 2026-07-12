@@ -122,8 +122,14 @@ style PIPELINE fill:none,stroke:#666,stroke-width:2px,stroke-dasharray: 6 6
 | **Usage velocity** | 2 | `total_secs_velocity`, `num_unq_velocity` — recent activity vs the user's own baseline |
 | **Engagement recency** | 1 | `days_since_last_use` |
 
-![Continous features vs. Churn](figures/cont_fea_boxplot.png)
-![binary features vs. Churn](figures/cont_fea_boxplot.png)
+
+### Feature Distributions vs. Churn
+<table>
+  <tr>
+    <td><img src="figures/cont_fea_boxplot.png" width="100%"/></td>
+    <td><img src="figures/bin_fea_barplot.png" width="100%"/></td>
+  </tr>
+</table>
 
 ### Velocity, Not Volume
 
