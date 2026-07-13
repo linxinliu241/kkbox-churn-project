@@ -187,7 +187,7 @@ classDef process fill:#63A46C,color:white,stroke:#333,font-size:20px;
 classDef final fill:#C94C4C,color:white,stroke:#333,font-size:20px;
 
 
-class A,B,C,D, J, L raw;
+class A,B,C,D raw;
 
 class E,F,I,J,K,L,M,N process;
 
@@ -200,7 +200,6 @@ class O final;
 style DATA fill:none,stroke:none
 
 style FEATURE fill:none,stroke:#666,stroke-width:2px,stroke-dasharray:6 6
-
 ```
 
 
