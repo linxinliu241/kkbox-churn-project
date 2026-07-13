@@ -360,13 +360,12 @@ We also built a weighted ensemble of all five models, with weights fit on perfor
 
 | Metric | Ensemble (val) | XGBoost (val) | |
 |--------|:--------:|:-------:|---|
-| PR-AUC | 0.5459 | 0.5420 | ensemble +0.0039 |
-| Log Loss | 0.1432 | 0.1479 | ensemble better |
-| ROC-AUC | 0.8296 | 0.8303 | XGBoost better |
+| PR-AUC | 0.7606 | 0.7588 | ensemble better |
+| Log Loss | 0.1083 | 0.1084 | XGBoost better |
+| ROC-AUC | 0.9395 | 0.9402 | XGBoost better |
 
-*(Note: these figures carry over from the previous version of this table — since the evaluation split changed from test to validation, they should be double-checked against a re-run of `6_ensemble.ipynb` before this is treated as final.)*
 
-The ensemble wins on two metrics and loses on one — too small and too mixed to call a clear improvement. More importantly, explaining an ensemble per user requires a model-agnostic method orders of magnitude slower than `TreeExplainer`. **We shipped the single XGBoost model**: the gain wasn't worth giving up per-user explainability.
+The ensemble wins on one metric and loses on two — too small and too mixed to call a clear improvement. More importantly, explaining an ensemble per user requires a model-agnostic method orders of magnitude slower than `TreeExplainer`. **We shipped the single XGBoost model**: the gain wasn't worth giving up per-user explainability.
 
 ---
 
