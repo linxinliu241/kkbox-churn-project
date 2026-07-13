@@ -96,7 +96,7 @@ flowchart LR
 %% Stage 1: Data Integration
 %% =========================
 
-subgraph DATA["Data Integration"]
+subgraph DATA["Data Integration / Feature Engineering"]
 
 direction LR
 
@@ -146,7 +146,7 @@ end
 %% Stage 2: Feature Engineering
 %% =========================
 
-subgraph FEATURE["Feature Engineering"]
+subgraph FEATURE["Feature Engineering / EDA"]
 
 direction TB
 
