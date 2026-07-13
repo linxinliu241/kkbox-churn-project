@@ -209,12 +209,9 @@ style FEATURE fill:none,stroke:#666,stroke-width:2px,stroke-dasharray:6 6
 
 | Step | Operation |
 |---|---|
-| 1 | **Transaction integration and cohort construction**: Combined `transactions.csv` and `transactions_v2.csv`, removed duplicate records, and identified users whose memberships expired (from the perspective of the cohort cutoff) within each cohort month as prediction targets. |
-| 2 | **User profile and activity integration**: Merged `members.csv` and historical `user_logs.csv` information with target users using `msno`, while restricting activity records to the period before each cohort cutoff date. |
-| 3 | **User-cohort dataset construction**: Integrated transaction, profile, and activity records into a user-cohort level dataset, where each observation represents one user at one cohort month. |
-| 4 | **Historical record aggregation**: Aggregated multiple transaction and activity records within each user-cohort into summary statistics describing subscription behavior, payment patterns, and engagement trends. |
-| 5 | **Feature cleaning and selection**: Removed unreliable or non-predictive variables, including demographic fields with extreme values and redundant predictors; selected 9 predictive features based on feature-churn relationships. |
-| 6 | **Missing value handling and dataset split**: Imputed missing values using training-set information only and created time-based train, validation, and test cohorts for future prediction evaluation. |
+| 1 | **User-cohort dataset construction**: Integrated transaction, profile, and activity records into a user-cohort level dataset, where each observation represents one user at one cohort month. |
+| 2 | **Feature cleaning and selection**: Removed unreliable or non-predictive variables, including demographic fields with extreme values and redundant predictors; selected 9 predictive features based on feature-churn relationships. |
+| 3 | **Missing value handling and dataset split**: Imputed missing values using training-set information only and created time-based train, validation, and test cohorts for future prediction evaluation. |
 
 
 ---
