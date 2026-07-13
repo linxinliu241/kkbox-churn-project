@@ -153,22 +153,17 @@ subgraph FEATURE["Feature Engineering"]
 direction TB
 
 
-J["User-Cohort Aggregation<br/>Group records by user and cohort<br/>Create one row per user-cohort"]
 
-K["Feature Construction<br/>Generate payment, renewal,<br/>cancellation, and engagement features"]
+M["Feature Construction and Selection<br/>Analyze feature-churn relationships<br/>Select 9 predictors"]
 
-L["Feature Selection<br/>Analyze feature-churn relationships<br/>Select 9 predictors"]
+N["Data Preparation<br/>Missing value imputation<br/>Time-based train / validation / test split"]
 
-M["Data Preparation<br/>Missing value imputation<br/>Time-based train / validation / test split"]
-
-N["Final Modeling Dataset<br/>25 monthly cohorts<br/>9 selected features"]
+O["Final Modeling Dataset<br/>25 monthly cohorts<br/>9 selected features"]
 
 
 
-J --> K
-K --> L
-L --> M
 M --> N
+N -- O
 
 
 end
@@ -209,7 +204,6 @@ style DATA fill:none,stroke:none
 style FEATURE fill:none,stroke:#666,stroke-width:2px,stroke-dasharray:6 6
 
 ```
-'''
 
 
 
