@@ -231,7 +231,7 @@ This fix addresses the leak for the val/test split, but **we did not fix it for 
 
 ## Feature Engineering
 
-After constructing the user-cohort dataset, we transformed aggregated behavioral records into predictive features that capture subscription commitment, payment patterns, customer tenure, and engagement changes before churn.
+We engineered features from behavioral records that capture subscription commitment, payment patterns, customer tenure, and engagement changes before churn.
 
 The original preprocessing pipeline generated 28 candidate features. After analyzing feature distributions, feature-churn relationships, and redundancy, 9 predictors were retained for final modeling.
 
