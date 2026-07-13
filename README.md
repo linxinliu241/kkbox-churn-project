@@ -210,7 +210,7 @@ style FEATURE fill:none,stroke:#666,stroke-width:2px,stroke-dasharray:6 6
 | Step | Operation |
 |---|---|
 | 1 | **User-cohort dataset construction**: Integrated transaction, profile, and activity records into a user-cohort level dataset, where each observation represents one user at one cohort month. |
-| 2 | **Feature cleaning and selection**: Removed unreliable or non-predictive variables, including demographic fields with extreme values and redundant predictors; selected 9 predictive features based on feature-churn relationships. |
+| 2 | **Feature cleaning and selection**: Removed unreliable or non-predictive variables, including demographic fields with extreme values and high missingness. Removed redundant predictors; selected 9 predictive features based on feature-churn relationships. |
 | 3 | **Missing value handling and dataset split**: Imputed missing values using training-set information only and created time-based train, validation, and test cohorts for future prediction evaluation. |
 
 
