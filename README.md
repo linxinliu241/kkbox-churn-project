@@ -187,9 +187,9 @@ classDef process fill:#63A46C,color:white,stroke:#333,font-size:20px;
 classDef final fill:#C94C4C,color:white,stroke:#333,font-size:20px;
 
 
-class A,B,C,D raw;
+class A,B,C,D,J,L raw;
 
-class E,F,I,J,K,L,M,N process;
+class E,F,I,K,M,N process;
 
 class O final;
 
