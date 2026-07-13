@@ -44,7 +44,7 @@ A time-agnostic validation framework identifying high-risk users with XGBoost, a
 
 Music streaming platforms acquire millions of users, yet retaining long-term subscribers remains a major challenge. This project develops a machine learning framework to predict user churn on KKBOX by leveraging subscription patterns, listening behaviors, and user profile information.
 
-The goal is to identify users at risk of leaving before subscription renewal and uncover behavioral patterns associated with churn. The pipeline uses a time-agnostic evaluation framework to ensure realistic future prediction and reliable model assessment.
+The goal is to identify users at risk of leaving and uncover behavioral patterns associated with churn. We employ the framework of training on multiple monthly cohorts to ensure realistic future predictions and reliable model assessments throughout time.
 
 
 
@@ -64,14 +64,14 @@ The goal is to identify users at risk of leaving before subscription renewal and
 
 ## Churn Definition
 
-The original KKBOX competition dataset provides churn labels for a subset of users, specifically the users that had an expiration date in February 2017 (regardless of whether they had already canceled before Feb 1 or if they signed up for a short plan within Feb). We wanted churn labels that would only look at the last transaction from a particular cutoff to decide if their expiration date fell within the observational window. The Kaggle competition also provided a Scala file for label generation. We were able to pull inspiration from their labeling process to construct a pipeline taking in the transaction data and producing 25 monthly cohorts: Feb 2016 - Feb 2017. In order to properly run our sorting algorithm on the transactions, we had to drop the users that had more than 2 renewal/cancel transactions in a single day (a small number comparatively). With a better transaction-tracking process than the data set provides, the ordering of a user's transactions in a single day could be more concrete, and we would not have to drop these users.
+The original KKBOX competition dataset provides churn labels for a subset of users, specifically the users that had an expiration date in February 2017 (regardless of whether they had already canceled before Feb 1 or if they signed up for a short plan within Feb), based on whether they renewed their subscription within 30 days of their last expiration date. These labels were not what we wanted. We only want to make predictions on users who, from the perspective of a cutoff time, have an active plan that expires in the target window. The Kaggle competition also provided a Scala file for label generation. We were able to pull inspiration from this Scala labeling process to construct a pipeline taking in the transaction data and producing 25 monthly cohorts: Feb 2016 - Feb 2017. In order to properly run our sorting algorithm on the transactions, we had to drop the users that had more than 2 renewal/cancel transactions in a single day (a small number of users comparatively). With a better transaction-tracking process than the data set provides, the ordering of a user's transactions in a single day could be more concrete, and we would not have to drop these users.
 
 For each cohort month, users whose last expiration date (from the perspective of the cutoff) falls within that month were selected as prediction targets. A user was labeled as:
 
 - `churn = 1`: no renewal transaction occurred within 30 days after membership expiration.
 - `churn = 0`: the user renewed successfully within the 30-day post-expiration window.
 
-This cohort-based labeling strategy enables consistent evaluation across time and allows the model to simulate real-world churn prediction using only historical information available before each prediction cutoff.
+This cohort-based labeling strategy enables us to train a model to make evaluations across time and allows the model to simulate real-world churn prediction using only historical information available before each prediction cutoff.
 
 
 
