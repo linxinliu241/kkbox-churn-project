@@ -1,4 +1,4 @@
-# Loyal Customers vs. Ghost Accounts
+# Predicting Churn Before it Happens
 ## A Machine Learning Framework for Predicting User Retention and Churn on KKbox
 
 **Authors:** Yingying Yang · Darryl Jent · Linxin Liu · Kaiwen Jin · Albert Lu
