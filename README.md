@@ -163,7 +163,7 @@ O["Final Modeling Dataset<br/>25 monthly cohorts<br/>9 selected features"]
 
 
 M --> N
-N -- O
+N --> O
 
 
 end
