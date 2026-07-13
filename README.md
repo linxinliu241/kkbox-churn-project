@@ -112,7 +112,7 @@ D["user_logs.csv<br/>Listening activity"]
 
 E["Transaction Integration<br/>Combine transaction history"]
 
-F["Cohort Construction<br/>Identify users expiring<br/>within each cohort month"]
+F["Cohort Construction and Transaction Data Agreggation<br/>Identify users expiring<br/>within each cohort month and track and aggregate transactional information from before cutoff"]
 
 G["Profile Integration<br/>Merge member information"]
 
@@ -120,20 +120,24 @@ H["Activity Integration<br/>Attach historical logs<br/>before cutoff date"]
 
 I["User-Cohort Raw Dataset<br/>Integrated transaction, profile,<br/>and activity records"]
 
+J["mult_cohort_transaction_data.csv<br/>Cohort based churn labels and transaction data aggregation"]
+K["User-Cohort Usage Data Generation <br/> For each user in each cohort, calculate the usage velocities and recency based on the cohort cutoff date"]
+L["mult_cohort_usage_date.parquet<br/> Cohort based usage velocities and recency"]
+
 
 
 A --> E
 B --> E
-
 E --> F
+F --> J
 
-F --> G
-C --> G
+J --> K
+D --> K
+K --> L
 
-G --> H
-D --> H
-
-H --> I
+C --> I
+J --> I
+L --> I
 
 
 end
