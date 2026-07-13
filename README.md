@@ -74,7 +74,7 @@ For each cohort month, users whose last expiration date (from the perspective of
 This cohort-based labeling strategy enables us to train a model to make evaluations across time and allows the model to simulate real-world churn prediction using only historical information available before each prediction cutoff.
 
 
-
+'''
 ## Data Pipeline
 
 ```mermaid
@@ -209,6 +209,7 @@ style DATA fill:none,stroke:none
 style FEATURE fill:none,stroke:#666,stroke-width:2px,stroke-dasharray:6 6
 
 ```
+'''
 
 
 
